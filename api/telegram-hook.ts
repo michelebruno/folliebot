@@ -1,20 +1,16 @@
 import {VercelRequest, VercelResponse} from "@vercel/node"
 import {Telegraf, Context} from "telegraf"
-import _ from 'lodash'
-export const BOT_TOKEN = process.env.BOT_TOKEN
+import handleElemosina from "../handlers/elemosina";
+export const BOT_TOKEN = process.env.BOT_TOKEN || ''
 const SECRET_HASH = process.env.SECRET_HASH || '32e58fbahey833349df3383dc910e180'
+
 // Note: change to false when running locally
 const BASE_PATH =
     process.env.VERCEL_ENV === "production"
         ? "https://folliebot.vercel.app"
         : "https://folliebot.vercel.app"
+
 const bot = new Telegraf(BOT_TOKEN)
-
-
-const laureati = [
-    "Ripo",
-    "Leti"
-]
 
 export async function handleTestCommand(ctx: Context) {
     const COMMAND = "/test"
@@ -36,41 +32,14 @@ export async function handleTestCommand(ctx: Context) {
 }
 
 
-export async function handleOnMessage(ctx: Context) {
-    const {message} = ctx
 
-    const isGroup =
-        message?.chat.type === "group" || message?.chat.type === "supergroup"
-
-    if (isGroup) {
-        await ctx.reply("This bot is only available in private chats.")
-        return
-    }
-
-    const telegramUsername = message?.from?.username
-    const reply = "a message was sent by " + telegramUsername
-
-    await ctx.reply(reply, {
-        reply_to_message_id: message.message_id,
-    })
-}
-
-export async function handleOnPaga(ctx: Context) {
-    const {message} = ctx
-
-    await ctx.sendChatAction("typing")
-
-    await ctx.reply(`Ciao, ${message?.from?.username}, ${_.sample(laureati)} ti ha offerto un caffè!`, {
-        reply_to_message_id: message.message_id,
-    })
-}
 
 bot.command("test", async (ctx) => {
     await handleTestCommand(ctx)
 })
 
 bot.command("elemosina", async (ctx) => {
-    await handleOnPaga(ctx)
+    await handleElemosina(ctx)
 })
 
 // bot.on("message", async (ctx) => {
