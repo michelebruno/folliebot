@@ -1,4 +1,5 @@
 import {service} from "./google";
+import {now} from "lodash";
 
 export async function getTickets() {
     try {
@@ -52,15 +53,16 @@ export async function getLastTicket() {
 export async function addTicket(ticket: string, uid: string, username: string) {
 
     try {
+        const time = new Date()
         const values = [
-            [ticket, uid, username, Date.now().toString()]
+            [ticket, uid, username, Date.now(), time.toString()]
         ];
 
         const result = await service.spreadsheets.values.append({
             resource: {values},
             valueInputOption: 'USER_ENTERED',
             spreadsheetId: process.env.SPREADSHEET_ID,
-            range: "A2:D"
+            range: "A2:E"
             // valueInputOption,
         });
         return result;

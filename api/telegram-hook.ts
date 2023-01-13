@@ -43,7 +43,7 @@ bot.command("elemosina", handleElemosina)
 bot.command("listTickets", async (ctx: Context) => {
 
     const result = await getTickets()
-    return await ctx.sendMessage(`Ecco i biglietti emessi: \n${result?.values?.map(([t, id, username]: string[]) => `${t} da ${username}`).join('\n ')}`)
+    return await ctx.sendMessage(`Ecco i biglietti emessi: \n${result?.values?.map(([t, id, username]: string[]) => `${t} da ${username}`).join('\n')}`)
 
 })
 bot.command("id", async (ctx: Context) => {

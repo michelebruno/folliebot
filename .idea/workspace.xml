@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6576dd61-69ef-4cba-b1f7-4da38dd3f397" name="Changes" comment="elemosina.ts">
-      <change afterPath="$PROJECT_DIR$/.vercelignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/google.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/tickets.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="6576dd61-69ef-4cba-b1f7-4da38dd3f397" name="Changes" comment="tokens">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/hello.ts" beforeDir="false" afterPath="$PROJECT_DIR$/api/hello.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/telegram-hook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/api/telegram-hook.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handlers/elemosina.ts" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/elemosina.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/tickets.ts" beforeDir="false" afterPath="$PROJECT_DIR$/utils/tickets.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +74,7 @@
       <workItem from="1673377864545" duration="9226000" />
       <workItem from="1673446051153" duration="7000" />
       <workItem from="1673536489239" duration="4912000" />
-      <workItem from="1673610564146" duration="4745000" />
+      <workItem from="1673610564146" duration="5572000" />
     </task>
     <task id="LOCAL-00001" summary="Setup BVS">
       <created>1673385666278</created>
@@ -97,7 +90,21 @@
       <option name="project" value="LOCAL" />
       <updated>1673387924394</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="tokens">
+      <created>1673620150118</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1673620150118</updated>
+    </task>
+    <task id="LOCAL-00004" summary="tokens">
+      <created>1673620157965</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1673620157965</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -118,14 +125,15 @@
     <MESSAGE value="Setup" />
     <MESSAGE value="Setup BVS" />
     <MESSAGE value="elemosina.ts" />
-    <option name="LAST_COMMIT_MESSAGE" value="elemosina.ts" />
+    <MESSAGE value="tokens" />
+    <option name="LAST_COMMIT_MESSAGE" value="tokens" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/utils/tickets.ts</url>
-          <line>65</line>
+          <line>67</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="5" />
         </line-breakpoint>
