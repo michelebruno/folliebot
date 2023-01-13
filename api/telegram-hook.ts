@@ -1,6 +1,9 @@
 import {VercelRequest, VercelResponse} from "@vercel/node"
 import {Telegraf, Context} from "telegraf"
 import handleElemosina from "../handlers/elemosina";
+import _ from "lodash";
+import {getTickets} from "../utils/tickets";
+
 export const BOT_TOKEN = process.env.BOT_TOKEN || ''
 const SECRET_HASH = process.env.SECRET_HASH || '32e58fbahey833349df3383dc910e180'
 
@@ -32,14 +35,26 @@ export async function handleTestCommand(ctx: Context) {
 }
 
 
-
-
 bot.command("test", async (ctx) => {
     await handleTestCommand(ctx)
 })
 
-bot.command("elemosina", async (ctx) => {
-    await handleElemosina(ctx)
+bot.command("elemosina", handleElemosina)
+bot.command("listTickets", async (ctx: Context) => {
+
+    const result = await getTickets()
+    return await ctx.sendMessage(`Ecco i biglietti emessi: \n${result?.values?.map(([t, id, username]: string[]) => `${t} da ${username}`).join('\n ')}`)
+
+})
+bot.command("id", async (ctx: Context) => {
+
+    const {message} = ctx
+    ctx.reply(`Ciao, il tuo id è ${message?.from?.id}. Ti chiami ${message?.from?.first_name} ${message?.from?.last_name}, @${message?.from?.username}.`, {
+        reply_to_message_id: message?.message_id,
+    })
+    ctx.reply(JSON.stringify(message?.from), {
+        reply_to_message_id: message?.message_id,
+    })
 })
 
 // bot.on("message", async (ctx) => {
