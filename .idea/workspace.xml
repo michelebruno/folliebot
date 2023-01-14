@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6576dd61-69ef-4cba-b1f7-4da38dd3f397" name="Changes" comment="minor">
+    <list default="true" id="6576dd61-69ef-4cba-b1f7-4da38dd3f397" name="Changes" comment="callback_query">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.vercelignore" beforeDir="false" afterPath="$PROJECT_DIR$/.vercelignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/telegram-hook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/api/telegram-hook.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handlers/elemosina.ts" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/elemosina.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/tickets.ts" beforeDir="false" afterPath="$PROJECT_DIR$/utils/tickets.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +77,7 @@
       <workItem from="1673536489239" duration="4912000" />
       <workItem from="1673610564146" duration="5764000" />
       <workItem from="1673621441251" duration="2648000" />
-      <workItem from="1673713572274" duration="1519000" />
+      <workItem from="1673713572274" duration="5641000" />
     </task>
     <task id="LOCAL-00001" summary="Setup BVS">
       <created>1673385666278</created>
@@ -115,7 +114,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673620981009</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="callback_query">
+      <created>1673715415396</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1673715415396</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -138,23 +144,11 @@
     <MESSAGE value="elemosina.ts" />
     <MESSAGE value="tokens" />
     <MESSAGE value="minor" />
-    <option name="LAST_COMMIT_MESSAGE" value="minor" />
+    <MESSAGE value="callback_query" />
+    <option name="LAST_COMMIT_MESSAGE" value="callback_query" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/utils/tickets.ts</url>
-          <line>66</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/api/telegram-hook.ts</url>
-          <line>73</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-      </breakpoints>
       <default-breakpoints>
         <breakpoint enabled="true" type="javascript-exception" />
       </default-breakpoints>

@@ -3,6 +3,10 @@ import {Telegraf, Context} from "telegraf"
 import handleElemosina from "../handlers/elemosina";
 import _, {update} from "lodash";
 import {addTicket, getLastTicket, getNextToken, getTickets} from "../utils/tickets";
+import Jimp = require("jimp");
+import * as os from "os";
+import * as path from "path";
+import * as fs from "fs";
 
 export const BOT_TOKEN = process.env.BOT_TOKEN || ''
 const SECRET_HASH = process.env.SECRET_HASH || '32e58fbahey833349df3383dc910e180'
@@ -72,13 +76,31 @@ bot.on('callback_query', async (ctx: Context) => {
 
     if (callback_query?.data === 'elemosina_sure') {
 
+        await ctx.telegram.deleteMessage(message.chat.id, message.message_id)
+
+        await ctx.sendChatAction('upload_photo')
+
         const nextToken = await getNextToken((await getLastTicket())[0])
 
         await addTicket(nextToken, from.id, from?.username || `${from?.first_name} ${from?.last_name}`)
 
-        await ctx.telegram.deleteMessage(message.chat.id, message.message_id)
 
-        await ctx.reply(`Ciao, ${message?.from?.username}, ${_.sample(laureati)} ti ha offerto un caffè! Il tuo codice è ${nextToken}`)
+        const image = await Jimp.read(path.join(process.cwd(), 'ticket.jpg'));
+
+        const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
+
+
+        let tW = Jimp.measureText(font, nextToken.toUpperCase());
+        image.print(font, 320 - tW / 2, image.getHeight() * 3 / 4,
+            {
+                text: nextToken.toUpperCase(),
+                //  alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER,
+                // alignmentY: Jimp.VERTICAL_ALIGN_MIDDLE
+            });
+
+        // image.write('./test.jpg')
+
+        return await ctx.replyWithPhoto({source: await image.getBufferAsync(Jimp.MIME_JPEG)}, {caption: `Ciao, ${from?.username}, ${_.sample(laureati)} ti ha offerto un caffè! Il tuo codice è ${nextToken}`})
 
     }
 
