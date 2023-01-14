@@ -1,5 +1,4 @@
 import {service} from "./google";
-import {now} from "lodash";
 
 export async function getTickets() {
     try {

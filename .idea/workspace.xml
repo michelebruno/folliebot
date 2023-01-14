@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6576dd61-69ef-4cba-b1f7-4da38dd3f397" name="Changes" comment="tokens">
+    <list default="true" id="6576dd61-69ef-4cba-b1f7-4da38dd3f397" name="Changes" comment="minor">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vercelignore" beforeDir="false" afterPath="$PROJECT_DIR$/.vercelignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/telegram-hook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/api/telegram-hook.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handlers/elemosina.ts" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/elemosina.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/tickets.ts" beforeDir="false" afterPath="$PROJECT_DIR$/utils/tickets.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -74,7 +76,9 @@
       <workItem from="1673377864545" duration="9226000" />
       <workItem from="1673446051153" duration="7000" />
       <workItem from="1673536489239" duration="4912000" />
-      <workItem from="1673610564146" duration="5572000" />
+      <workItem from="1673610564146" duration="5764000" />
+      <workItem from="1673621441251" duration="2648000" />
+      <workItem from="1673713572274" duration="1519000" />
     </task>
     <task id="LOCAL-00001" summary="Setup BVS">
       <created>1673385666278</created>
@@ -104,7 +108,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673620157965</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="minor">
+      <created>1673620981009</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1673620981009</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -126,16 +137,22 @@
     <MESSAGE value="Setup BVS" />
     <MESSAGE value="elemosina.ts" />
     <MESSAGE value="tokens" />
-    <option name="LAST_COMMIT_MESSAGE" value="tokens" />
+    <MESSAGE value="minor" />
+    <option name="LAST_COMMIT_MESSAGE" value="minor" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/utils/tickets.ts</url>
-          <line>67</line>
-          <properties lambdaOrdinal="-1" />
+          <line>66</line>
           <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/api/telegram-hook.ts</url>
+          <line>73</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

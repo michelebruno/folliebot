@@ -1,17 +1,25 @@
 import {VercelRequest, VercelResponse} from "@vercel/node"
 import {Telegraf, Context} from "telegraf"
 import handleElemosina from "../handlers/elemosina";
-import _ from "lodash";
-import {getTickets} from "../utils/tickets";
+import _, {update} from "lodash";
+import {addTicket, getLastTicket, getNextToken, getTickets} from "../utils/tickets";
 
 export const BOT_TOKEN = process.env.BOT_TOKEN || ''
 const SECRET_HASH = process.env.SECRET_HASH || '32e58fbahey833349df3383dc910e180'
+
+const laureati = [
+    "Ripo",
+    "Leti",
+    "Bort",
+    "Cram",
+    "Ele Buttolo"
+]
 
 // Note: change to false when running locally
 const BASE_PATH =
     process.env.VERCEL_ENV === "production"
         ? "https://folliebot.vercel.app"
-        : "https://folliebot.vercel.app"
+        : "https://e13f-94-36-120-112.eu.ngrok.io"
 
 const bot = new Telegraf(BOT_TOKEN)
 
@@ -57,6 +65,25 @@ bot.command("id", async (ctx: Context) => {
     })
 })
 
+bot.on('callback_query', async (ctx: Context) => {
+
+    const {update: {callback_query}} = ctx
+    const {message, from} = callback_query
+
+    if (callback_query?.data === 'elemosina_sure') {
+
+        const nextToken = await getNextToken((await getLastTicket())[0])
+
+        await addTicket(nextToken, from.id, from?.username || `${from?.first_name} ${from?.last_name}`)
+
+        await ctx.telegram.deleteMessage(message.chat.id, message.message_id)
+
+        await ctx.reply(`Ciao, ${message?.from?.username}, ${_.sample(laureati)} ti ha offerto un caffè! Il tuo codice è ${nextToken}`)
+
+    }
+
+});
+
 // bot.on("message", async (ctx) => {
 //     await handleOnMessage(ctx)
 // })
@@ -65,6 +92,7 @@ export default async (req: VercelRequest, res: VercelResponse) => {
     try {
         // Retrieve the POST request body that gets sent from Telegram
         const {body, query} = req
+
 
         if (query.setWebhook === "true") {
             const webhookUrl = `${BASE_PATH}/api/telegram-hook?secret_hash=${SECRET_HASH}`

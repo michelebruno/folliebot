@@ -1,4 +1,4 @@
-import {Context} from "telegraf";
+import {Context, Markup} from "telegraf";
 import _ from 'lodash'
 import {addTicket, getLastTicket, getNextToken} from "../utils/tickets";
 
@@ -17,11 +17,21 @@ export default async function handleElemosina(ctx: Context) {
 
     await ctx.sendChatAction("typing")
 
-    const nextToken = await getNextToken((await getLastTicket())[0])
+    const conferma = await ctx.reply(
+        'Sicuro di volerlo scroccare?',
+        Markup.inlineKeyboard([
+            Markup.button.callback('Sì', 'elemosina_sure'),
+            Markup.button.callback('No dai', 'elemosina_delete'),
+        ])
+    )
 
-    await addTicket(nextToken, from.id, from?.username || `${from?.first_name} ${from?.last_name}`)
+    if (conferma) {
 
-    await ctx.reply(`Ciao, ${message?.from?.username}, ${_.sample(laureati)} ti ha offerto un caffè! Il tuo codice è ${nextToken}`, {
-        reply_to_message_id: message?.message_id,
-    })
+
+    } else {
+
+        await ctx.reply("Grande, conservalo per un caffé giudizio!", {
+            reply_to_message_id: message?.message_id,
+        })
+    }
 }
