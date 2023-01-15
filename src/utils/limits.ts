@@ -18,7 +18,7 @@ export async function canUserSpend (ctx: Context, from: any) {
 
   const tickets = await getTickets()
 
-  const myTickets = ((tickets.values?.filter(t => Number(t[1]) === from.id)) != null) || []
+  const myTickets = ((tickets?.values) != null) ? tickets.values?.filter(t => Number(t[1]) === from.id) : []
 
   if (myTickets.filter(t => today.isBefore(Number(t[3]))).length > DAILY_USER_LIMIT) {
     await ctx.reply('Non fare il pezzente, ne hai già scroccato uno oggi!')
@@ -44,19 +44,17 @@ export async function doWeStillHaveTickets (ctx: Context) {
 
   const today = moment().startOf('day')
 
-  const tickets = ((await getTickets()).values != null) || []
+  const _tickets = await getTickets()
+  const tickets = ((_tickets?.values) != null) ? _tickets?.values : []
 
   if (tickets.filter(t => today.isBefore(Number(t[3]))).length > DAILY_LIMIT) {
     await ctx.reply('Mi spiace, sono finiti i sospesi di oggi!')
-
     return false
   } else if (tickets.filter(t => thisWeek.isBefore(Number(t[3]))).length > WEEKLY_LIMIT) {
     await ctx.reply('Mi spiace, sono finiti i sospesi di questa settimana!')
-
     return false
   } else if (tickets.filter(t => thisMonth.isBefore(Number(t[3]))).length > MONTHLY_LIMIT) {
     await ctx.reply('Mi spiace, sono finiti i sospesi di questo mese!')
-
     return false
   }
 

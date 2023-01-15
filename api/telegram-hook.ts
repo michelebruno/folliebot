@@ -3,6 +3,9 @@ import { Telegraf, Context } from 'telegraf'
 import handleElemosina, { handleElemosinaCallback } from '../src/handlers/elemosina'
 import { getTickets } from '../src/utils/tickets'
 import { message } from 'telegraf/filters'
+import Jimp from "jimp";
+import path from "path";
+import _ from "lodash";
 
 export const BOT_TOKEN = process.env.BOT_TOKEN || ''
 const SECRET_HASH = process.env.SECRET_HASH || '32e58fbahey833349df3383dc910e180'
@@ -73,6 +76,7 @@ bot.on('callback_query', async (ctx: Context) => {
     if (callback_query?.data === 'elemosina_sure') {
       return await handleElemosinaCallback(ctx)
     } else if (callback_query?.data === 'elemosina_delete') {
+      console.log('Elemosina rifiutata')
       await ctx.telegram.deleteMessage(message.chat.id, message.message_id)
 
       await ctx.reply('Grande, conservalo per un caffé giudizio!')

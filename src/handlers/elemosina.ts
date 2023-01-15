@@ -1,9 +1,11 @@
-import { Context, Markup, Telegraf } from 'telegraf'
+import {Context, Markup, Telegraf} from 'telegraf'
 import _ from 'lodash'
-import { addTicket, getLastTicket, getNextToken } from '../utils/tickets'
-import { canUserSpend, doWeStillHaveTickets } from '../utils/limits'
+import {addTicket, getLastTicket, getNextToken} from '../utils/tickets'
+import {canUserSpend, doWeStillHaveTickets} from '../utils/limits'
 import path from 'path'
 import Jimp from 'jimp'
+import * as fs from "fs";
+
 export const BOT_TOKEN = process.env.BOT_TOKEN || ''
 
 const laureati = [
@@ -16,7 +18,7 @@ const laureati = [
 
 const bot = new Telegraf(BOT_TOKEN)
 
-export default async function handleElemosina (ctx: Context) {
+export default async function handleElemosina(ctx: Context) {
   await ctx.sendChatAction('typing')
 
   if (await doWeStillHaveTickets(ctx)) {
@@ -30,9 +32,9 @@ export default async function handleElemosina (ctx: Context) {
   }
 }
 
-export async function handleElemosinaCallback (ctx: Context) {
-  const { update: { callback_query } } = ctx
-  const { message, from } = callback_query
+export async function handleElemosinaCallback(ctx: Context) {
+  const {update: {callback_query}} = ctx
+  const {message, from} = callback_query
 
   await bot.telegram.deleteMessage(message.chat.id, message.message_id)
 
@@ -41,23 +43,32 @@ export async function handleElemosinaCallback (ctx: Context) {
 
     const nextToken = await getNextToken((await getLastTicket())[0])
 
-    const image = await Jimp.read(path.join(process.cwd(), 'ticket.jpg'))
+    const image = await Jimp.read(path.join(process.cwd(), 'files', 'ticket.jpg'))
 
-    const font = await Jimp.loadFont(path.resolve(process.cwd(), 'src', 'fonts', 'open-sans-32-black.fnt'))
+    try {
+      // console.log(fs.readdirSync(process.cwd()))
+      // console.log(fs.readdirSync(path.join(process.cwd(), 'files')))
+      //console.log(fs.readdirSync(path.join(process.cwd(), 'files', 'fonts')))
+      path.resolve(process.cwd(), 'files', 'open-sans-32-black.png')
 
-    const tW = Jimp.measureText(font, nextToken.toUpperCase())
+      const font = await Jimp.loadFont(path.join(process.cwd(), 'files', 'open-sans-32-black.fnt'))
 
-    image.print(font, 320 - tW / 2, image.getHeight() * 3 / 4,
-      {
-        text: nextToken.toUpperCase()
-        //  alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER,
-        // alignmentY: Jimp.VERTICAL_ALIGN_MIDDLE
-      })
+      const tW = Jimp.measureText(font, nextToken.toUpperCase())
 
-    // image.write('./test.jpg')
+      image.print(font, 320 - tW / 2, image.getHeight() * 3 / 4,
+        {
+          text: nextToken.toUpperCase()
+          //  alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER,
+          // alignmentY: Jimp.VERTICAL_ALIGN_MIDDLE
+        })
 
-    await ctx.replyWithPhoto({ source: await image.getBufferAsync(Jimp.MIME_JPEG) }, { caption: `Ciao, ${from?.username}, ${_.sample(laureati)} ti ha offerto un caffè! Il tuo codice è ${nextToken}` })
+      // image.write('./test.jpg')
 
-    return await addTicket(nextToken, from.id, from?.username || `${from?.first_name} ${from?.last_name}`)
+      await ctx.replyWithPhoto({source: await image.getBufferAsync(Jimp.MIME_JPEG)}, {caption: `Ciao, ${from?.username}, ${_.sample(laureati)} ti ha offerto un caffè! Il tuo codice è ${nextToken}`})
+
+      return await addTicket(nextToken, from.id, from?.username || `${from?.first_name} ${from?.last_name}`)
+    } catch (e) {
+      return await ctx.reply('error:' + e.toString())
+    }
   }
 }
