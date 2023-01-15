@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6576dd61-69ef-4cba-b1f7-4da38dd3f397" name="Changes" comment="callback_query">
+    <list default="true" id="6576dd61-69ef-4cba-b1f7-4da38dd3f397" name="Changes" comment="works">
+      <change afterPath="$PROJECT_DIR$/.eslintrc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jsLinters/eslint.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.nvmrc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/open-sans-10-black.fnt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/open-sans-32-black.fnt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/open-sans-32-black.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/handlers/elemosina.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/limits.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/tickets.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/hello.ts" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/api/telegram-hook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/api/telegram-hook.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handlers/elemosina.ts" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/google.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/google.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/tickets.ts" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -16,6 +33,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaScript File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -31,20 +49,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/michelebruno/coding/folliebot&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/michelebruno/coding/folliebot/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "javascript.nodejs.core.library.configured.version": "18.13.0",
+    "javascript.nodejs.core.library.typings.version": "18.11.18",
+    "last_opened_file_path": "/Users/michelebruno/coding/folliebot/fonts",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "nodejs_interpreter_path": "node",
+    "nodejs_package_manager_path": "yarn",
+    "settings.editor.selected.configurable": "preferences.sourceCode",
+    "ts.external.directory.path": "/Users/michelebruno/coding/folliebot/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/fonts" />
       <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
   <component name="RunManager">
@@ -77,7 +107,7 @@
       <workItem from="1673536489239" duration="4912000" />
       <workItem from="1673610564146" duration="5764000" />
       <workItem from="1673621441251" duration="2648000" />
-      <workItem from="1673713572274" duration="5641000" />
+      <workItem from="1673713572274" duration="19237000" />
     </task>
     <task id="LOCAL-00001" summary="Setup BVS">
       <created>1673385666278</created>
@@ -121,7 +151,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673715415396</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="writes and sends ticket">
+      <created>1673719680000</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1673719680000</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -145,13 +182,8 @@
     <MESSAGE value="tokens" />
     <MESSAGE value="minor" />
     <MESSAGE value="callback_query" />
-    <option name="LAST_COMMIT_MESSAGE" value="callback_query" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <default-breakpoints>
-        <breakpoint enabled="true" type="javascript-exception" />
-      </default-breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="writes and sends ticket" />
+    <MESSAGE value="works" />
+    <option name="LAST_COMMIT_MESSAGE" value="works" />
   </component>
 </project>
