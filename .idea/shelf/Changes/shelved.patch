@@ -1,0 +1,117 @@
+Index: api/telegram-hook.ts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import { VercelRequest, VercelResponse } from '@vercel/node'\nimport { Telegraf, Context } from 'telegraf'\nimport handleElemosina, { handleElemosinaCallback } from '../src/handlers/elemosina'\nimport { getTickets } from '../src/utils/tickets'\nimport { message } from 'telegraf/filters'\nimport Jimp from \"jimp\";\nimport path from \"path\";\nimport _ from \"lodash\";\n\nexport const BOT_TOKEN = process.env.BOT_TOKEN || ''\nconst SECRET_HASH = process.env.SECRET_HASH || '32e58fbahey833349df3383dc910e180'\n\n// Note: change to false when running locally\nconst BASE_PATH =\n  process.env.VERCEL_ENV === 'production'\n    ? 'https://folliebot.vercel.app'\n    : 'https://e13f-94-36-120-112.eu.ngrok.io'\n\nconst bot = new Telegraf(BOT_TOKEN)\n\nexport async function handleTestCommand (ctx: Context) {\n  const COMMAND = '/test'\n  const { message } = ctx\n\n  const reply = 'Hello there! Awaiting your service: ' + (process.env?.VERCEL_ENV || process.env.NODE_ENV)\n\n  const didReply = await ctx.reply(reply, {\n    reply_to_message_id: message?.message_id\n  })\n\n  if (didReply) {\n    console.log(`Reply to ${COMMAND} command sent successfully.`)\n  } else {\n    console.error(\n      `Something went wrong with the ${COMMAND} command. Reply not sent.`\n    )\n  }\n}\n\nbot.command('test', async (ctx) => {\n  await handleTestCommand(ctx)\n})\n\nbot.command('elemosina', handleElemosina)\nbot.command('listTickets', async (ctx: Context) => {\n  const result = await getTickets()\n  return await ctx.sendMessage(`Ecco i biglietti emessi: \\n${result?.values?.map(([t, id, username]: string[]) => `${t} da ${username}`).join('\\n')}`)\n})\n\nbot.command('productionWebhook', async (ctx: Context) => {\n  await fetch('https://folliebot.vercel.app/api/telegram-hook?setWebhook=true')\n\n  return await ctx.reply('Hit hook')\n})\nbot.command('devWebhook', async (ctx: Context) => {\n  await fetch('https://e13f-94-36-120-112.eu.ngrok.io/api/telegram-hook?setWebhook=true')\n\n  return await ctx.reply('Hit hook')\n})\n\nbot.command('id', async (ctx: Context) => {\n  const { message } = ctx\n  await ctx.reply(`Ciao, il tuo id è ${message?.from?.id}. Ti chiami ${message?.from?.first_name} ${message?.from?.last_name}, @${message?.from?.username}.`, {\n    reply_to_message_id: message?.message_id\n  })\n  await ctx.reply(JSON.stringify(message), {\n    reply_to_message_id: message?.message_id\n  })\n})\n\nbot.on('callback_query', async (ctx: Context) => {\n  try {\n    const { update: { callback_query } } = ctx\n    const { message, from } = callback_query\n\n    if (callback_query?.data === 'elemosina_sure') {\n      return await handleElemosinaCallback(ctx)\n    } else if (callback_query?.data === 'elemosina_delete') {\n      console.log('Elemosina rifiutata')\n      await ctx.telegram.deleteMessage(message.chat.id, message.message_id)\n\n      await ctx.reply('Grande, conservalo per un caffé giudizio!')\n    }\n  } catch (e: any) {\n    console.error(e.toString())\n    await ctx.reply(\"C'è stato un errore. Riprova\")\n    await bot.telegram.sendMessage(850859747, \"⚠️ C'è stato un errore con \" + message?.chat?.username)\n    await bot.telegram.sendMessage(850859747, e.toString())\n  }\n})\n\n// bot.on(\"message\", async (ctx) => {\n//     await handleOnMessage(ctx)\n// })\n\nexport default async (req: VercelRequest, res: VercelResponse) => {\n  try {\n    // Retrieve the POST request body that gets sent from Telegram\n    const { body, query } = req\n\n    if (query.setWebhook === 'true') {\n      const webhookUrl = `${BASE_PATH}/api/telegram-hook?secret_hash=${SECRET_HASH}`\n\n      // Would be nice to somehow do this in a build file or something\n      const isSet = await bot.telegram.setWebhook(webhookUrl)\n\n      console.log(`Set webhook to ${webhookUrl}: ${isSet}`)\n    }\n\n    if (query.secret_hash === SECRET_HASH) {\n      await bot.handleUpdate(body)\n    }\n  } catch (error) {\n    // If there was an error sending our message then we\n    // can log it into the Vercel console\n    console.error('Error sending message')\n    console.log(error.toString())\n  }\n\n  // Acknowledge the message with Telegram\n  // by sending a 200 HTTP status code\n  // The message here doesn't matter.\n  res.status(200).send('OK')\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/api/telegram-hook.ts b/api/telegram-hook.ts
+--- a/api/telegram-hook.ts	(revision fb2da8a0c4ae98d652f2798e3aa6b8e22a4c90a6)
++++ b/api/telegram-hook.ts	(date 1673869662225)
+@@ -1,11 +1,8 @@
+-import { VercelRequest, VercelResponse } from '@vercel/node'
+-import { Telegraf, Context } from 'telegraf'
+-import handleElemosina, { handleElemosinaCallback } from '../src/handlers/elemosina'
+-import { getTickets } from '../src/utils/tickets'
+-import { message } from 'telegraf/filters'
+-import Jimp from "jimp";
+-import path from "path";
+-import _ from "lodash";
++import {VercelRequest, VercelResponse} from '@vercel/node'
++import {Telegraf, Context} from 'telegraf'
++import handleElemosina, {handleElemosinaCallback} from '../src/handlers/elemosina'
++import {getTickets} from '../src/utils/tickets'
++
+ 
+ export const BOT_TOKEN = process.env.BOT_TOKEN || ''
+ const SECRET_HASH = process.env.SECRET_HASH || '32e58fbahey833349df3383dc910e180'
+@@ -14,13 +11,13 @@
+ const BASE_PATH =
+   process.env.VERCEL_ENV === 'production'
+     ? 'https://folliebot.vercel.app'
+-    : 'https://e13f-94-36-120-112.eu.ngrok.io'
++    : 'https://4a81-109-115-153-198.eu.ngrok.io'
+ 
+ const bot = new Telegraf(BOT_TOKEN)
+ 
+-export async function handleTestCommand (ctx: Context) {
++export async function handleTestCommand(ctx: Context) {
+   const COMMAND = '/test'
+-  const { message } = ctx
++  const {message} = ctx
+ 
+   const reply = 'Hello there! Awaiting your service: ' + (process.env?.VERCEL_ENV || process.env.NODE_ENV)
+ 
+@@ -52,14 +49,15 @@
+ 
+   return await ctx.reply('Hit hook')
+ })
++
+ bot.command('devWebhook', async (ctx: Context) => {
+-  await fetch('https://e13f-94-36-120-112.eu.ngrok.io/api/telegram-hook?setWebhook=true')
++  await fetch('https://4a81-109-115-153-198.eu.ngrok.io/api/telegram-hook?setWebhook=true')
+ 
+   return await ctx.reply('Hit hook')
+ })
+ 
+ bot.command('id', async (ctx: Context) => {
+-  const { message } = ctx
++  const {message} = ctx
+   await ctx.reply(`Ciao, il tuo id è ${message?.from?.id}. Ti chiami ${message?.from?.first_name} ${message?.from?.last_name}, @${message?.from?.username}.`, {
+     reply_to_message_id: message?.message_id
+   })
+@@ -70,8 +68,8 @@
+ 
+ bot.on('callback_query', async (ctx: Context) => {
+   try {
+-    const { update: { callback_query } } = ctx
+-    const { message, from } = callback_query
++    const {update: {callback_query}} = ctx
++    const {message, from} = callback_query
+ 
+     if (callback_query?.data === 'elemosina_sure') {
+       return await handleElemosinaCallback(ctx)
+@@ -94,31 +92,25 @@
+ // })
+ 
+ export default async (req: VercelRequest, res: VercelResponse) => {
+-  try {
+-    // Retrieve the POST request body that gets sent from Telegram
+-    const { body, query } = req
++  // Retrieve the POST request body that gets sent from Telegram
++  const {body, query} = req
+ 
+-    if (query.setWebhook === 'true') {
+-      const webhookUrl = `${BASE_PATH}/api/telegram-hook?secret_hash=${SECRET_HASH}`
++  if (query.setWebhook === 'true') {
++    const webhookUrl = `${BASE_PATH}/api/telegram-hook?secret_hash=${SECRET_HASH}`
+ 
+-      // Would be nice to somehow do this in a build file or something
+-      const isSet = await bot.telegram.setWebhook(webhookUrl)
++    // Would be nice to somehow do this in a build file or something
++    const isSet = await bot.telegram.setWebhook(webhookUrl)
+ 
+-      console.log(`Set webhook to ${webhookUrl}: ${isSet}`)
+-    }
++    console.log(`Set webhook to ${webhookUrl}: ${isSet}`)
++  }
+ 
+-    if (query.secret_hash === SECRET_HASH) {
+-      await bot.handleUpdate(body)
+-    }
+-  } catch (error) {
+-    // If there was an error sending our message then we
+-    // can log it into the Vercel console
+-    console.error('Error sending message')
+-    console.log(error.toString())
++  if (query.secret_hash === SECRET_HASH) {
++    await bot.handleUpdate(body)
+   }
+ 
+   // Acknowledge the message with Telegram
+   // by sending a 200 HTTP status code
+   // The message here doesn't matter.
+-  res.status(200).send('OK')
++  return res.status(200).send('OK')
+ }
++

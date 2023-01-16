@@ -1,10 +1,9 @@
 import {Context, Markup, Telegraf} from 'telegraf'
-import _ from 'lodash'
-import {addTicket, getLastTicket, getNextToken} from '../utils/tickets'
+import {addTicket, getLastTicket, getNextToken, getTicketsCount} from '../utils/tickets'
 import {canUserSpend, doWeStillHaveTickets} from '../utils/limits'
 import path from 'path'
 import Jimp from 'jimp'
-import * as fs from "fs";
+import {broadcast} from "../utils/users";
 
 export const BOT_TOKEN = process.env.BOT_TOKEN || ''
 
@@ -50,23 +49,44 @@ export async function handleElemosinaCallback(ctx: Context) {
       // console.log(fs.readdirSync(path.join(process.cwd(), 'files')))
       //console.log(fs.readdirSync(path.join(process.cwd(), 'files', 'fonts')))
       path.resolve(process.cwd(), 'files', 'open-sans-32-black.png')
+      path.resolve(Jimp.FONT_SANS_128_WHITE)
+      path.resolve(Jimp.FONT_SANS_32_BLACK)
 
-      const font = await Jimp.loadFont(path.join(process.cwd(), 'files', 'open-sans-32-black.fnt'))
+      const font128 = path.resolve(process.cwd(), 'files', 'PPFuji-Bold.fnt')
+      const font32 = path.resolve(process.cwd(), 'files', 'PPFuji-Bold-30.fnt')
 
+
+      if (process?.env?.VERCEL) {
+        path.resolve(process.cwd(), 'files', 'PPFuji-Bold-30.png')
+        path.resolve(process.cwd(), 'files', 'PPFuji-Bold.png')
+      }
+
+      const font = await Jimp.loadFont(font128)
+      const fontSm = await Jimp.loadFont(font32)
+
+      const maxW = 300
       const tW = Jimp.measureText(font, nextToken.toUpperCase())
 
-      image.print(font, 320 - tW / 2, image.getHeight() * 3 / 4,
+      image.print(font, (image.getWidth() - tW) / 2, (image.getHeight() - 80) / 2,
+        nextToken.toUpperCase())
+
+      image.print(fontSm, 460, 682,
         {
-          text: nextToken.toUpperCase()
+          text: ' #' + (await getTicketsCount() + 1).toString(),
           //  alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER,
           // alignmentY: Jimp.VERTICAL_ALIGN_MIDDLE
         })
 
       // image.write('./test.jpg')
 
-      await ctx.replyWithPhoto({source: await image.getBufferAsync(Jimp.MIME_JPEG)}, {caption: `Ciao, ${from?.username}, ${_.sample(laureati)} ti ha offerto un caffè! Il tuo codice è ${nextToken}`})
+      await ctx.replyWithPhoto({source: await image.getBufferAsync(Jimp.MIME_JPEG)}, {caption: `Ecco il tuo buono, mostralo in cassa e giudica responsabilmente.`})
 
-      return await addTicket(nextToken, from.id, from?.username || `${from?.first_name} ${from?.last_name}`)
+      await addTicket(nextToken, from.id, from?.username || `${from?.first_name} ${from?.last_name}`)
+
+
+      await broadcast(async (user) => {
+        await bot.telegram.sendMessage(user.chatId, `${(from?.first_name && from?.last_name) ? from?.first_name + " " + from?.last_name : from?.username} ha scroccato un caffè.`)
+      }, from?.id)
     } catch (e) {
       return await ctx.reply('error:' + e.toString())
     }

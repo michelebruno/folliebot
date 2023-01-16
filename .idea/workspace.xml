@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6576dd61-69ef-4cba-b1f7-4da38dd3f397" name="Changes" comment="works">
-      <change afterPath="$PROJECT_DIR$/api/hello.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/files/fonts/Lato-Bold/74a428a640ac4d50bae3d4182da135e2-12.fnt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/files/fonts/Lato-Bold/74a428a640ac4d50bae3d4182da135e2-16.fnt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/files/fonts/Lato-Bold/74a428a640ac4d50bae3d4182da135e2-18.fnt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/files/fonts/Lato-Bold/74a428a640ac4d50bae3d4182da135e2-32.fnt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/files/fonts/Lato-Bold/74a428a640ac4d50bae3d4182da135e2-36.fnt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jsLinters/eslint.xml" beforeDir="false" />
+    <list default="true" id="6576dd61-69ef-4cba-b1f7-4da38dd3f397" name="Changes" comment="Scans files in prod">
+      <change afterPath="$PROJECT_DIR$/files/fonts/open-sans-128-white/open-sans-128-white.fnt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/files/fonts/open-sans-128-white/open-sans-128-white.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/files/fonts/open-sans-32-white/open-sans-32-white.fnt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/files/fonts/open-sans-32-white/open-sans-32-white.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/users.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/telegram-hook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/api/telegram-hook.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fonts/open-sans-10-black.fnt" beforeDir="false" afterPath="$PROJECT_DIR$/files/fonts/open-sans-10-black.fnt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fonts/open-sans-32-black.fnt" beforeDir="false" afterPath="$PROJECT_DIR$/files/open-sans-32-black.fnt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fonts/open-sans-32-black.png" beforeDir="false" afterPath="$PROJECT_DIR$/files/open-sans-32-black.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/ticket.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/files/ticket.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screenshot.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/handlers/elemosina.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/elemosina.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/limits.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/limits.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticket.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/files/ticket.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/tickets.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/tickets.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,30 +40,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "javascript.nodejs.core.library.configured.version": "18.13.0",
-    "javascript.nodejs.core.library.typings.version": "18.11.18",
-    "last_opened_file_path": "/Users/michelebruno/coding/folliebot/files/fonts",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "nodejs_interpreter_path": "node",
-    "nodejs_package_manager_path": "yarn",
-    "settings.editor.selected.configurable": "settings.javascript.linters.eslint",
-    "ts.external.directory.path": "/Users/michelebruno/coding/folliebot/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;18.13.0&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;18.11.18&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/michelebruno/coding/folliebot/files/fonts&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.linters.eslint&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/michelebruno/coding/folliebot/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
-      "JavaScript"
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;JavaScript&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/files/fonts" />
@@ -75,29 +71,40 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/utils" />
       <recent name="$PROJECT_DIR$/files" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
-  <component name="RunManager" selected="Node.js.scratch.js">
+  <component name="RunManager" selected="npm.start --debug">
+    <configuration name="scratch_1.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$APPLICATION_CONFIG_DIR$/scratches/scratch_1.js" working-dir="$PROJECT_DIR$">
+      <method v="2" />
+    </configuration>
     <configuration name="scratch.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$APPLICATION_CONFIG_DIR$/scratches/scratch.js" working-dir="$PROJECT_DIR$">
       <method v="2" />
     </configuration>
-    <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+    <configuration name="start --debug" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
         <script value="start" />
       </scripts>
+      <arguments value="--debug" />
       <node-interpreter value="project" />
       <envs />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Node.js.scratch.js" />
+      <item itemvalue="Node.js.scratch_1.js" />
+      <item itemvalue="npm.start --debug" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.start --debug" />
+        <item itemvalue="Node.js.scratch_1.js" />
         <item itemvalue="Node.js.scratch.js" />
-        <item itemvalue="npm.start" />
       </list>
     </recent_temporary>
   </component>
@@ -115,7 +122,10 @@
       <workItem from="1673610564146" duration="5764000" />
       <workItem from="1673621441251" duration="2648000" />
       <workItem from="1673713572274" duration="20764000" />
-      <workItem from="1673817500510" duration="4226000" />
+      <workItem from="1673817500510" duration="6784000" />
+      <workItem from="1673864584184" duration="607000" />
+      <workItem from="1673868702834" duration="317000" />
+      <workItem from="1673869078485" duration="9607000" />
     </task>
     <task id="LOCAL-00001" summary="Setup BVS">
       <created>1673385666278</created>
@@ -180,7 +190,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673795020983</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Scans files in prod">
+      <created>1673822954288</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1673822954288</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -206,6 +223,19 @@
     <MESSAGE value="callback_query" />
     <MESSAGE value="writes and sends ticket" />
     <MESSAGE value="works" />
-    <option name="LAST_COMMIT_MESSAGE" value="works" />
+    <MESSAGE value="Scans files in dirs" />
+    <MESSAGE value="Scans files in prod" />
+    <option name="LAST_COMMIT_MESSAGE" value="Scans files in prod" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$APPLICATION_CONFIG_DIR$/scratches/scratch_1.js</url>
+          <line>46</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

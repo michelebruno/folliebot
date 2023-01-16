@@ -1,11 +1,9 @@
-import { VercelRequest, VercelResponse } from '@vercel/node'
-import { Telegraf, Context } from 'telegraf'
-import handleElemosina, { handleElemosinaCallback } from '../src/handlers/elemosina'
-import { getTickets } from '../src/utils/tickets'
-import { message } from 'telegraf/filters'
-import Jimp from "jimp";
-import path from "path";
-import _ from "lodash";
+import {VercelRequest, VercelResponse} from '@vercel/node'
+import {Telegraf, Context} from 'telegraf'
+import handleElemosina, {handleElemosinaCallback} from '../src/handlers/elemosina'
+import {getTickets} from '../src/utils/tickets'
+import {addUser} from "../src/utils/users";
+
 
 export const BOT_TOKEN = process.env.BOT_TOKEN || ''
 const SECRET_HASH = process.env.SECRET_HASH || '32e58fbahey833349df3383dc910e180'
@@ -14,13 +12,13 @@ const SECRET_HASH = process.env.SECRET_HASH || '32e58fbahey833349df3383dc910e180
 const BASE_PATH =
   process.env.VERCEL_ENV === 'production'
     ? 'https://folliebot.vercel.app'
-    : 'https://e13f-94-36-120-112.eu.ngrok.io'
+    : 'https://7092-109-115-153-198.eu.ngrok.io'
 
 const bot = new Telegraf(BOT_TOKEN)
 
-export async function handleTestCommand (ctx: Context) {
+export async function handleTestCommand(ctx: Context) {
   const COMMAND = '/test'
-  const { message } = ctx
+  const {message} = ctx
 
   const reply = 'Hello there! Awaiting your service: ' + (process.env?.VERCEL_ENV || process.env.NODE_ENV)
 
@@ -41,7 +39,19 @@ bot.command('test', async (ctx) => {
   await handleTestCommand(ctx)
 })
 
+bot.start(async (ctx: Context) => {
+  console.log(ctx)
+  const {update: {message: {from, chat}}} = ctx
+
+
+  await addUser(from, chat);
+
+  await ctx.reply('Ciao, benvenuto!')
+})
+
 bot.command('elemosina', handleElemosina)
+bot.command('scrocca', handleElemosina)
+
 bot.command('listTickets', async (ctx: Context) => {
   const result = await getTickets()
   return await ctx.sendMessage(`Ecco i biglietti emessi: \n${result?.values?.map(([t, id, username]: string[]) => `${t} da ${username}`).join('\n')}`)
@@ -53,13 +63,13 @@ bot.command('productionWebhook', async (ctx: Context) => {
   return await ctx.reply('Hit hook')
 })
 bot.command('devWebhook', async (ctx: Context) => {
-  await fetch('https://e13f-94-36-120-112.eu.ngrok.io/api/telegram-hook?setWebhook=true')
+  await fetch('https://50ca-109-115-153-198.eu.ngrok.io/api/telegram-hook?setWebhook=true')
 
   return await ctx.reply('Hit hook')
 })
 
 bot.command('id', async (ctx: Context) => {
-  const { message } = ctx
+  const {message} = ctx
   await ctx.reply(`Ciao, il tuo id è ${message?.from?.id}. Ti chiami ${message?.from?.first_name} ${message?.from?.last_name}, @${message?.from?.username}.`, {
     reply_to_message_id: message?.message_id
   })
@@ -69,14 +79,16 @@ bot.command('id', async (ctx: Context) => {
 })
 
 bot.on('callback_query', async (ctx: Context) => {
+
+  const {update: {callback_query}} = ctx
+  const {message, from} = callback_query
+
   try {
-    const { update: { callback_query } } = ctx
-    const { message, from } = callback_query
 
     if (callback_query?.data === 'elemosina_sure') {
       return await handleElemosinaCallback(ctx)
     } else if (callback_query?.data === 'elemosina_delete') {
-      console.log('Elemosina rifiutata')
+
       await ctx.telegram.deleteMessage(message.chat.id, message.message_id)
 
       await ctx.reply('Grande, conservalo per un caffé giudizio!')
@@ -84,7 +96,7 @@ bot.on('callback_query', async (ctx: Context) => {
   } catch (e: any) {
     console.error(e.toString())
     await ctx.reply("C'è stato un errore. Riprova")
-    await bot.telegram.sendMessage(850859747, "⚠️ C'è stato un errore con " + message?.chat?.username)
+    await bot.telegram.sendMessage(850859747, "⚠️ C'è stato un errore con " + from?.username)
     await bot.telegram.sendMessage(850859747, e.toString())
   }
 })
@@ -96,7 +108,7 @@ bot.on('callback_query', async (ctx: Context) => {
 export default async (req: VercelRequest, res: VercelResponse) => {
   try {
     // Retrieve the POST request body that gets sent from Telegram
-    const { body, query } = req
+    const {body, query} = req
 
     if (query.setWebhook === 'true') {
       const webhookUrl = `${BASE_PATH}/api/telegram-hook?secret_hash=${SECRET_HASH}`
