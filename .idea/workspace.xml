@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6576dd61-69ef-4cba-b1f7-4da38dd3f397" name="Changes" comment="Scans files in prod">
-      <change afterPath="$PROJECT_DIR$/files/fonts/open-sans-128-white/open-sans-128-white.fnt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/files/fonts/open-sans-128-white/open-sans-128-white.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/files/fonts/open-sans-32-white/open-sans-32-white.fnt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/files/fonts/open-sans-32-white/open-sans-32-white.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/users.ts" afterDir="false" />
+    <list default="true" id="6576dd61-69ef-4cba-b1f7-4da38dd3f397" name="Changes" comment="Go-live">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/telegram-hook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/api/telegram-hook.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/ticket.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/files/ticket.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screenshot.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/handlers/elemosina.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/elemosina.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/limits.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/limits.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/tickets.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/tickets.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/users.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/users.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,7 +115,8 @@
       <workItem from="1673817500510" duration="6784000" />
       <workItem from="1673864584184" duration="607000" />
       <workItem from="1673868702834" duration="317000" />
-      <workItem from="1673869078485" duration="9607000" />
+      <workItem from="1673869078485" duration="9668000" />
+      <workItem from="1673883889278" duration="1354000" />
     </task>
     <task id="LOCAL-00001" summary="Setup BVS">
       <created>1673385666278</created>
@@ -197,7 +188,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673822954288</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Go-live">
+      <created>1673881314386</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1673881314386</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -225,7 +223,8 @@
     <MESSAGE value="works" />
     <MESSAGE value="Scans files in dirs" />
     <MESSAGE value="Scans files in prod" />
-    <option name="LAST_COMMIT_MESSAGE" value="Scans files in prod" />
+    <MESSAGE value="Go-live" />
+    <option name="LAST_COMMIT_MESSAGE" value="Go-live" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

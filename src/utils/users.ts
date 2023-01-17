@@ -4,7 +4,7 @@ export async function addUser(from, chat) {
 
   const users = await getUsers();
 
-  if (users.findIndex(u => u.userId === from?.id) !== -1) return true;
+  if (users.findIndex(u => u.userId == from?.id) !== -1) return true;
 
   const values =
     [
@@ -34,8 +34,8 @@ export async function getUsers(force = false) {
   })
 
   _users = result?.data?.values?.map(i => ({
-    chatId: i[0],
-    userId: i[1],
+    chatId: Number(i[0]),
+    userId: Number(i[1]),
     username: i[2],
     last_name: i[3],
     first_name: i[4],
