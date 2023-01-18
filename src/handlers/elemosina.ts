@@ -72,7 +72,7 @@ export async function handleElemosinaCallback(ctx: Context) {
 
       image.print(fontSm, 460, 682,
         {
-          text: ' #' + (await getTicketsCount() + 1).toString(),
+          text: ' #' + (await getTicketsCount() + 35 + 1).toString(),
           //  alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER,
           // alignmentY: Jimp.VERTICAL_ALIGN_MIDDLE
         })

@@ -39,6 +39,7 @@ export async function getUsers(force = false) {
     username: i[2],
     last_name: i[3],
     first_name: i[4],
+    is_admin: ['x','true','1',1].includes(i[5])
   }))
 
   console.log("Risultati", result?.data?.values);
@@ -46,6 +47,9 @@ export async function getUsers(force = false) {
   return _users
 }
 
+export async function getUser(id: number) {
+  
+}
 
 export async function broadcast(cb: Function, except: number = 0) {
   const users = await getUsers()

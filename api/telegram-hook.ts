@@ -3,6 +3,7 @@ import {Telegraf, Context} from 'telegraf'
 import handleElemosina, {handleElemosinaCallback} from '../src/handlers/elemosina'
 import {getTickets} from '../src/utils/tickets'
 import {addUser} from "../src/utils/users";
+import {getCurrentStatus} from "../src/utils/limits";
 
 
 export const BOT_TOKEN = process.env.BOT_TOKEN || ''
@@ -68,6 +69,17 @@ bot.command('devWebhook', async (ctx: Context) => {
   return await ctx.reply('Hit hook')
 })
 
+bot.command('status', async (ctx:Context) => {
+
+  const status = await getCurrentStatus();
+
+  await ctx.reply("Globale state:\n" + Object.entries(status).map(([k,v]) => (`${k}: ${v}`)).join('\n'))
+
+  const myStatus = await getCurrentStatus(ctx?.from);
+
+  await ctx.reply("Your state:\n" + Object.entries(myStatus).map(([k,v]) => (`${k}: ${v}`)).join('\n'))
+
+})
 bot.command('id', async (ctx: Context) => {
   const {message} = ctx
   await ctx.reply(`Ciao, il tuo id è ${message?.from?.id}. Ti chiami ${message?.from?.first_name} ${message?.from?.last_name}, @${message?.from?.username}.`, {
