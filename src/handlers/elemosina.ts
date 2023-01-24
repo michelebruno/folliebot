@@ -80,11 +80,17 @@ export async function handleElemosinaCallback(ctx: Context) {
       // image.write('./test.jpg')
 
       await ctx.replyWithPhoto({source: await image.getBufferAsync(Jimp.MIME_JPEG)}, {caption: `Ecco il tuo buono, mostralo in cassa e giudica responsabilmente.`})
+      const displayName = from?.first_name && from?.last_name ?
+        from?.first_name + " " + from?.last_name :
+        from?.usename ?
+          from?.username :
+          from?.name;
 
-      await addTicket(nextToken, from.id, from?.username || `${from?.first_name} ${from?.last_name}`)
+      await addTicket(nextToken, from.id, displayName)
+
 
       await broadcast(async (user) => {
-        await bot.telegram.sendMessage(user.chatId, `${(from?.first_name && from?.last_name) ? from?.first_name + " " + from?.last_name : from?.username} ha scroccato un caffè.`)
+        await bot.telegram.sendMessage(user.chatId, `${displayName} ha scroccato un caffè.`)
       }, from?.id)
 
     } catch (e) {
