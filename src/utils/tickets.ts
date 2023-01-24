@@ -79,6 +79,7 @@ export async function addTicket(ticket: string, uid: string, username: string) {
       range: 'A2:E'
       // valueInputOption,
     })
+
     return await result
   } catch (err) {
     throw err

@@ -42,8 +42,6 @@ export async function getUsers(force = false) {
     is_admin: ['x','true','1',1].includes(i[5])
   }))
 
-  console.log("Risultati", result?.data?.values);
-
   return _users
 }
 

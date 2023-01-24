@@ -89,7 +89,8 @@
   "include": [
     "src/*",
     "src/*/*",
-    "src/**",
+    "src/handlers/*",
+    "src/utils/*",
     "types/*",
     "api/*",
   ],

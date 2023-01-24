@@ -2,21 +2,21 @@ import {Context} from 'telegraf'
 import {getTickets} from './tickets'
 import moment = require('moment')
 
-const DAILY_LIMIT = 5
-const WEEKLY_LIMIT = 200
-const MONTHLY_LIMIT = 80
-const DAILY_USER_LIMIT = 1
-const WEEKLY_USER_LIMIT = 2
-const MONTHLY_USER_LIMIT = 5
+export const DAILY_LIMIT = 150
+export const WEEKLY_LIMIT = 200
+export const MONTHLY_LIMIT = 80
+export const DAILY_USER_LIMIT = 10
+export const WEEKLY_USER_LIMIT = 1
+export const MONTHLY_USER_LIMIT = 4
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 type status = {
-  month: Number,
-  week: Number,
-  day: Number
+  month: number,
+  week: number,
+  day: number
 }
 
 export async function getCurrentStatus(from: null | object = null): Promise<status> {
@@ -58,17 +58,19 @@ export async function canUserSpend(ctx: Context, from: any) {
     await ctx.reply('Non fare il pezzente, ne hai già scroccato uno oggi!')
 
     return false
+
   } else if (status.week >= WEEKLY_USER_LIMIT) {
     await ctx.reply(`Ne hai già scroccati ${WEEKLY_USER_LIMIT} questa settimana!`)
     await sleep(2000)
     await ctx.reply('Che gaffe!')
-    return false
 
     return false
+
   } else if (status.month >= MONTHLY_USER_LIMIT) {
     await ctx.reply('Non fare il pezzente, ne hai già scroccati troppi questo mese!')
 
     return false
+
   }
 
   return true

@@ -2,18 +2,15 @@ import {VercelRequest, VercelResponse} from '@vercel/node'
 import {Telegraf, Context} from 'telegraf'
 import handleElemosina, {handleElemosinaCallback} from '../src/handlers/elemosina'
 import {getTickets} from '../src/utils/tickets'
-import {addUser} from "../src/utils/users";
+import {addUser, broadcast} from "../src/utils/users";
 import {getCurrentStatus} from "../src/utils/limits";
 
 
-export const BOT_TOKEN = process.env.BOT_TOKEN || ''
-const SECRET_HASH = process.env.SECRET_HASH || '32e58fbahey833349df3383dc910e180'
+export const BOT_TOKEN = process.env.BOT_TOKEN
+const SECRET_HASH = process.env.SECRET_HASH
 
 // Note: change to false when running locally
-const BASE_PATH =
-  process.env.VERCEL_ENV === 'production'
-    ? 'https://folliebot.vercel.app'
-    : 'https://7092-109-115-153-198.eu.ngrok.io'
+const BASE_PATH = 'https://folliebot.vercel.app'
 
 const bot = new Telegraf(BOT_TOKEN)
 
@@ -63,21 +60,26 @@ bot.command('productionWebhook', async (ctx: Context) => {
 
   return await ctx.reply('Hit hook')
 })
-bot.command('devWebhook', async (ctx: Context) => {
-  await fetch('https://50ca-109-115-153-198.eu.ngrok.io/api/telegram-hook?setWebhook=true')
+
+bot.command('nuovolimite', async (ctx: Context) => {
+  await broadcast(async (u) => {
+    await bot.telegram.sendMessage(u.chatId, "Ciao 👋\n\nCi sono novità! Da questa settimana ci saranno molti più caffè al giorno, ma ciascuno ne può prendere solo uno alla settimana.\n\nGiudicate responsabilmente! ☕️☕️")
+  })
 
   return await ctx.reply('Hit hook')
 })
 
-bot.command('status', async (ctx:Context) => {
+
+
+bot.command('status', async (ctx: Context) => {
 
   const status = await getCurrentStatus();
 
-  await ctx.reply("Globale state:\n" + Object.entries(status).map(([k,v]) => (`${k}: ${v}`)).join('\n'))
+  await ctx.reply("Globale state:\n" + Object.entries(status).map(([k, v]) => (`${k}: ${v}`)).join('\n'))
 
   const myStatus = await getCurrentStatus(ctx?.from);
 
-  await ctx.reply("Your state:\n" + Object.entries(myStatus).map(([k,v]) => (`${k}: ${v}`)).join('\n'))
+  await ctx.reply("Your state:\n" + Object.entries(myStatus).map(([k, v]) => (`${k}: ${v}`)).join('\n'))
 
 })
 bot.command('id', async (ctx: Context) => {
@@ -110,6 +112,7 @@ bot.on('callback_query', async (ctx: Context) => {
     await ctx.reply("C'è stato un errore. Riprova")
     await bot.telegram.sendMessage(850859747, "⚠️ C'è stato un errore con " + from?.username)
     await bot.telegram.sendMessage(850859747, e.toString())
+    await bot.telegram.sendMessage(850859747, "Context:\n" + JSON.stringify(ctx))
   }
 })
 
@@ -123,7 +126,7 @@ export default async (req: VercelRequest, res: VercelResponse) => {
     const {body, query} = req
 
     if (query.setWebhook === 'true') {
-      const webhookUrl = `${BASE_PATH}/api/telegram-hook?secret_hash=${SECRET_HASH}`
+      const webhookUrl = `${BASE_PATH}/api/telegram-hook?secret_hash=${encodeURI(SECRET_HASH)}`
 
       // Would be nice to somehow do this in a build file or something
       const isSet = await bot.telegram.setWebhook(webhookUrl)
@@ -131,8 +134,10 @@ export default async (req: VercelRequest, res: VercelResponse) => {
       console.log(`Set webhook to ${webhookUrl}: ${isSet}`)
     }
 
-    if (query.secret_hash === SECRET_HASH) {
+    if (query.secret_hash == SECRET_HASH) {
       await bot.handleUpdate(body)
+    } else {
+      console.warn("Wrong secret hash. Got", query.secret_hash, "should be", SECRET_HASH, query.secret_hash == SECRET_HASH)
     }
   } catch (error) {
     // If there was an error sending our message then we

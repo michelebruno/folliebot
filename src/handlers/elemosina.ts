@@ -1,6 +1,6 @@
 import {Context, Markup, Telegraf} from 'telegraf'
 import {addTicket, getLastTicket, getNextToken, getTicketsCount} from '../utils/tickets'
-import {canUserSpend, doWeStillHaveTickets} from '../utils/limits'
+import {canUserSpend, DAILY_LIMIT, doWeStillHaveTickets, getCurrentStatus} from '../utils/limits'
 import path from 'path'
 import Jimp from 'jimp'
 import {broadcast} from "../utils/users";
@@ -83,10 +83,10 @@ export async function handleElemosinaCallback(ctx: Context) {
 
       await addTicket(nextToken, from.id, from?.username || `${from?.first_name} ${from?.last_name}`)
 
-
       await broadcast(async (user) => {
         await bot.telegram.sendMessage(user.chatId, `${(from?.first_name && from?.last_name) ? from?.first_name + " " + from?.last_name : from?.username} ha scroccato un caffè.`)
       }, from?.id)
+
     } catch (e) {
       return await ctx.reply('error:' + e.toString())
     }
