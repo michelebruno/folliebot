@@ -84,7 +84,7 @@ export async function handleElemosinaCallback(ctx: Context) {
         from?.first_name + " " + from?.last_name :
         from?.usename ?
           from?.username :
-          from?.name;
+          from?.first_name;
 
       await addTicket(nextToken, from.id, displayName)
 
