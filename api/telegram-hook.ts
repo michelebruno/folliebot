@@ -2,7 +2,7 @@ import {VercelRequest, VercelResponse} from '@vercel/node'
 import {Telegraf, Context} from 'telegraf'
 import handleElemosina, {handleElemosinaCallback} from '../src/handlers/elemosina'
 import {getTickets} from '../src/utils/tickets'
-import {addUser, broadcast} from "../src/utils/users";
+import {addUser, broadcast, getDisplayName} from "../src/utils/users";
 import {getCurrentStatus} from "../src/utils/limits";
 
 
@@ -70,7 +70,6 @@ bot.command('nuovolimite', async (ctx: Context) => {
 })
 
 
-
 bot.command('status', async (ctx: Context) => {
 
   const status = await getCurrentStatus();
@@ -109,8 +108,9 @@ bot.on('callback_query', async (ctx: Context) => {
     }
   } catch (e: any) {
     console.error(e.toString())
+    if (e.toString() === '400: Bad Request: message to delete not found') return;
     await ctx.reply("C'è stato un errore. Riprova")
-    await bot.telegram.sendMessage(850859747, "⚠️ C'è stato un errore con " + from?.username)
+    await bot.telegram.sendMessage(850859747, "⚠️ C'è stato un errore con " + getDisplayName(from))
     await bot.telegram.sendMessage(850859747, e.toString())
     await bot.telegram.sendMessage(850859747, "Context:\n" + JSON.stringify(ctx))
   }

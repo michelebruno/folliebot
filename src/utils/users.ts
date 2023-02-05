@@ -1,4 +1,23 @@
 import {service} from "./google";
+import {Telegraf} from "telegraf";
+
+export const BOT_TOKEN = process.env.BOT_TOKEN
+
+const bot = new Telegraf(BOT_TOKEN)
+
+export function getDisplayName(from) {
+  const name = from?.first_name && from?.last_name ?
+    from?.first_name + " " + from?.last_name :
+    from?.username ?
+      from?.username :
+      from?.first_name;
+
+  if (!name) {
+    bot.telegram.sendMessage(850859747, "Questo utente è undefined")
+    bot.telegram.sendMessage(850859747, JSON.stringify(from))
+  }
+  return name
+}
 
 export async function addUser(from, chat) {
 
@@ -39,14 +58,14 @@ export async function getUsers(force = false) {
     username: i[2],
     last_name: i[3],
     first_name: i[4],
-    is_admin: ['x','true','1',1].includes(i[5])
+    is_admin: ['x', 'true', '1', 1].includes(i[5])
   }))
 
   return _users
 }
 
 export async function getUser(id: number) {
-  
+
 }
 
 export async function broadcast(cb: Function, except: number = 0) {

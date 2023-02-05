@@ -3,7 +3,7 @@ import {addTicket, getLastTicket, getNextToken, getTicketsCount} from '../utils/
 import {canUserSpend, DAILY_LIMIT, doWeStillHaveTickets, getCurrentStatus} from '../utils/limits'
 import path from 'path'
 import Jimp from 'jimp'
-import {broadcast} from "../utils/users";
+import {broadcast, getDisplayName} from "../utils/users";
 
 export const BOT_TOKEN = process.env.BOT_TOKEN || ''
 
@@ -80,11 +80,7 @@ export async function handleElemosinaCallback(ctx: Context) {
       // image.write('./test.jpg')
 
       await ctx.replyWithPhoto({source: await image.getBufferAsync(Jimp.MIME_JPEG)}, {caption: `Ecco il tuo buono, mostralo in cassa e giudica responsabilmente.`})
-      const displayName = from?.first_name && from?.last_name ?
-        from?.first_name + " " + from?.last_name :
-        from?.usename ?
-          from?.username :
-          from?.first_name;
+      const displayName = getDisplayName(from)
 
       await addTicket(nextToken, from.id, displayName)
 
