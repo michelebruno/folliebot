@@ -1,5 +1,5 @@
 import {service} from "./google";
-import {Telegraf} from "telegraf";
+import {Context, Telegraf} from "telegraf";
 
 export const BOT_TOKEN = process.env.BOT_TOKEN
 
@@ -18,6 +18,16 @@ export function getDisplayName(from) {
   }
   return name
 }
+
+export function isAdmin(from: object | string | number) {
+
+  let id = typeof from === 'object' ?
+    from.from?.id || from?.id :
+    from;
+
+  return [850859747, 'michelebruno'].includes(id);
+}
+
 
 export async function addUser(from, chat) {
 
@@ -68,10 +78,21 @@ export async function getUser(id: number) {
 
 }
 
-export async function broadcast(cb: Function, except: number = 0) {
+export async function mapUsers(cb: Function, except: number = 0) {
   const users = await getUsers()
 
   for (const user of users.filter(u => u.userId != except)) {
     await cb(user)
   }
+}
+
+export async function broadcast(fn: Function | string) {
+
+  return await mapUsers(async u => {
+    let message = typeof fn === 'function' ? await fn(u) : fn
+
+    if (message) {
+      await bot.telegram.sendMessage(u.chatId, message)
+    }
+  })
 }

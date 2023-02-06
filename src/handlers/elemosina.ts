@@ -3,7 +3,7 @@ import {addTicket, getLastTicket, getNextToken, getTicketsCount} from '../utils/
 import {canUserSpend, DAILY_LIMIT, doWeStillHaveTickets, getCurrentStatus} from '../utils/limits'
 import path from 'path'
 import Jimp from 'jimp'
-import {broadcast, getDisplayName} from "../utils/users";
+import {mapUsers, getDisplayName} from "../utils/users";
 
 export const BOT_TOKEN = process.env.BOT_TOKEN || ''
 
@@ -85,7 +85,7 @@ export async function handleElemosinaCallback(ctx: Context) {
       await addTicket(nextToken, from.id, displayName)
 
 
-      await broadcast(async (user) => {
+      await mapUsers(async (user) => {
         await bot.telegram.sendMessage(user.chatId, `${displayName} ha scroccato un caffè.`)
       }, from?.id)
 

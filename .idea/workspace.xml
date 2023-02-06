@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6576dd61-69ef-4cba-b1f7-4da38dd3f397" name="Changes" comment="scemo io">
+    <list default="true" id="6576dd61-69ef-4cba-b1f7-4da38dd3f397" name="Changes" comment="dynamo sessions, channels first steps">
+      <change afterPath="$PROJECT_DIR$/src/utils/channels/events.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/ddbClient.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/validators.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/telegram-hook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/api/telegram-hook.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/handlers/elemosina.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/elemosina.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/users.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/users.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <list id="46cd7c9b-cf0b-4eef-a952-b9343dad92dc" name="commit" comment="new limits" />
     <option name="SHOW_DIALOG" value="false" />
@@ -137,6 +142,9 @@
       <workItem from="1675084470461" duration="817000" />
       <workItem from="1675177982394" duration="687000" />
       <workItem from="1675263414195" duration="216000" />
+      <workItem from="1675634958774" duration="10667000" />
+      <workItem from="1675694313167" duration="600000" />
+      <workItem from="1675698024707" duration="7407000" />
     </task>
     <task id="LOCAL-00001" summary="Setup BVS">
       <created>1673385666278</created>
@@ -250,7 +258,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675003755422</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="bug fix">
+      <created>1675635284923</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1675635284923</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -279,13 +294,14 @@
     <MESSAGE value="Scans files in dirs" />
     <MESSAGE value="Scans files in prod" />
     <MESSAGE value="Go-live" />
-    <MESSAGE value="bug fix" />
     <MESSAGE value="real go-live" />
     <MESSAGE value="new limit" />
     <MESSAGE value="ngrok, new limits" />
     <MESSAGE value="undefined name fixed" />
     <MESSAGE value="scemo io" />
-    <option name="LAST_COMMIT_MESSAGE" value="scemo io" />
+    <MESSAGE value="bug fix" />
+    <MESSAGE value="dynamo sessions, channels first steps" />
+    <option name="LAST_COMMIT_MESSAGE" value="dynamo sessions, channels first steps" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -2,9 +2,15 @@ import {VercelRequest, VercelResponse} from '@vercel/node'
 import {Telegraf, Context} from 'telegraf'
 import handleElemosina, {handleElemosinaCallback} from '../src/handlers/elemosina'
 import {getTickets} from '../src/utils/tickets'
-import {addUser, broadcast, getDisplayName} from "../src/utils/users";
+import {addUser, mapUsers, getDisplayName, broadcast, isAdmin} from "../src/utils/users";
 import {getCurrentStatus} from "../src/utils/limits";
 
+
+// @ts-ignore
+import DynamoDBSession from 'telegraf-session-dynamodb';
+
+import {handleEventSession, handleExihibitionSession} from "../src/utils/channels/events";
+import {hasUserName} from "../src/utils/validators";
 
 export const BOT_TOKEN = process.env.BOT_TOKEN
 const SECRET_HASH = process.env.SECRET_HASH
@@ -13,6 +19,19 @@ const SECRET_HASH = process.env.SECRET_HASH
 const BASE_PATH = 'https://folliebot.vercel.app'
 
 const bot = new Telegraf(BOT_TOKEN)
+
+const dynamoDBSession = new DynamoDBSession({
+  dynamoDBConfig: {
+    params: {
+      TableName: process.env.AWS_DYNAMODB_TABLE_SESSIONS
+    },
+    region: process.env.AWS_DYNAMODB_REGION || 'eu-south-1'
+  }
+})
+
+
+bot.use(dynamoDBSession.middleware())
+
 
 export async function handleTestCommand(ctx: Context) {
   const COMMAND = '/test'
@@ -33,14 +52,42 @@ export async function handleTestCommand(ctx: Context) {
   }
 }
 
+bot.command('event', async (ctx: Context) => {
+  if (await hasUserName(ctx)) {
+
+    ctx.session.sharing_to = 'events';
+
+    await ctx.reply("Mandami un link che descriva l'evento")
+  }
+})
+
+
+
+bot.command('exhibition', async (ctx: Context) => {
+  if (await hasUserName(ctx)) {
+
+    ctx.session.sharing_to = 'exhibition';
+
+    await ctx.reply("Mandami un link che descriva la mostra")
+  }
+})
+
+bot.command('broadcast', async (ctx: Context) => {
+  if (await hasUserName(ctx) && isAdmin(ctx)) {
+
+    ctx.session.sharing_to = 'broadcast';
+
+    await ctx.reply("Manda il messaggio da inoltrare a tutti.")
+  }
+})
+
 bot.command('test', async (ctx) => {
   await handleTestCommand(ctx)
 })
 
 bot.start(async (ctx: Context) => {
-  console.log(ctx)
-  const {update: {message: {from, chat}}} = ctx
 
+  const {update: {message: {from, chat}}} = ctx
 
   await addUser(from, chat);
 
@@ -61,12 +108,9 @@ bot.command('productionWebhook', async (ctx: Context) => {
   return await ctx.reply('Hit hook')
 })
 
-bot.command('nuovolimite', async (ctx: Context) => {
-  await broadcast(async (u) => {
-    await bot.telegram.sendMessage(u.chatId, "Ciao 👋\n\nCi sono novità! Da questa settimana ci saranno molti più caffè al giorno, ma ciascuno ne può prendere solo uno alla settimana.\n\nGiudicate responsabilmente! ☕️☕️")
-  })
-
-  return await ctx.reply('Hit hook')
+bot.command('cancel', async (ctx: Context) => {
+  ctx.session = null;
+  await ctx.reply("Ho annnulato la tua richiesta.")
 })
 
 
@@ -81,6 +125,7 @@ bot.command('status', async (ctx: Context) => {
   await ctx.reply("Your state:\n" + Object.entries(myStatus).map(([k, v]) => (`${k}: ${v}`)).join('\n'))
 
 })
+
 bot.command('id', async (ctx: Context) => {
   const {message} = ctx
   await ctx.reply(`Ciao, il tuo id è ${message?.from?.id}. Ti chiami ${message?.from?.first_name} ${message?.from?.last_name}, @${message?.from?.username}.`, {
@@ -90,6 +135,23 @@ bot.command('id', async (ctx: Context) => {
     reply_to_message_id: message?.message_id
   })
 })
+
+
+bot.on('message', async (ctx: Context) => {
+  if (ctx.session.sharing_to === 'events') {
+    return await handleEventSession(ctx);
+  } else if (ctx.session.sharing_to === 'exhibition') {
+    return await handleExihibitionSession(ctx);
+  } else if (ctx.session.sharing_to === 'broadcast' && isAdmin(ctx)) {
+    await mapUsers(async u => {
+      await bot.telegram.sendMessage(u.chatId, ctx?.message?.text, {
+        entities: ctx?.message?.entities,
+        // parse_mode: 'Markdown'  // use the same parse_mode that you used in the original message
+      })
+    })
+  }
+})
+
 
 bot.on('callback_query', async (ctx: Context) => {
 
