@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6576dd61-69ef-4cba-b1f7-4da38dd3f397" name="Changes" comment="dynamo sessions, channels first steps">
-      <change afterPath="$PROJECT_DIR$/src/utils/channels/events.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/ddbClient.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/validators.ts" afterDir="false" />
+    <list default="true" id="6576dd61-69ef-4cba-b1f7-4da38dd3f397" name="Changes" comment="classi">
+      <change afterPath="$PROJECT_DIR$/src/bot.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/class/Event.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/class/EventOrExhibition.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/class/Exihibition.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/types/Context.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/ngrok.ts" beforeDir="false" afterPath="$PROJECT_DIR$/api/ngrok.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/telegram-hook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/api/telegram-hook.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/api/test.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/handlers/elemosina.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/handlers/elemosina.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/channels/events.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/channels/events.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/ddbClient.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/ddbClient.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/users.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/users.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/validators.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/validators.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <list id="46cd7c9b-cf0b-4eef-a952-b9343dad92dc" name="commit" comment="new limits" />
@@ -75,7 +82,7 @@
       <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
-  <component name="RunManager" selected="Node.js.set-ngrok.js">
+  <component name="RunManager" selected="npm.start ">
     <configuration name="scratch_1.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$APPLICATION_CONFIG_DIR$/scratches/scratch_1.js" working-dir="$PROJECT_DIR$">
       <method v="2" />
     </configuration>
@@ -85,13 +92,12 @@
     <configuration name="set-ngrok.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/set-ngrok.js" working-dir="$PROJECT_DIR$">
       <method v="2" />
     </configuration>
-    <configuration name="start --debug" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+    <configuration name="start " type="js.build_tools.npm" temporary="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
         <script value="start" />
       </scripts>
-      <arguments value="--debug" />
       <node-interpreter value="project" />
       <envs />
       <method v="2" />
@@ -100,12 +106,12 @@
       <item itemvalue="Node.js.set-ngrok.js" />
       <item itemvalue="Node.js.scratch.js" />
       <item itemvalue="Node.js.scratch_1.js" />
-      <item itemvalue="npm.start --debug" />
+      <item itemvalue="npm.start " />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.start " />
         <item itemvalue="Node.js.set-ngrok.js" />
-        <item itemvalue="npm.start --debug" />
         <item itemvalue="Node.js.scratch_1.js" />
         <item itemvalue="Node.js.scratch.js" />
       </list>
@@ -144,7 +150,10 @@
       <workItem from="1675263414195" duration="216000" />
       <workItem from="1675634958774" duration="10667000" />
       <workItem from="1675694313167" duration="600000" />
-      <workItem from="1675698024707" duration="7407000" />
+      <workItem from="1675698024707" duration="10199000" />
+      <workItem from="1675777909325" duration="1024000" />
+      <workItem from="1675780502073" duration="706000" />
+      <workItem from="1675870257876" duration="18914000" />
     </task>
     <task id="LOCAL-00001" summary="Setup BVS">
       <created>1673385666278</created>
@@ -265,7 +274,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675635284923</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="dynamo sessions, channels first steps">
+      <created>1675727100530</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1675727100530</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -301,7 +317,9 @@
     <MESSAGE value="scemo io" />
     <MESSAGE value="bug fix" />
     <MESSAGE value="dynamo sessions, channels first steps" />
-    <option name="LAST_COMMIT_MESSAGE" value="dynamo sessions, channels first steps" />
+    <MESSAGE value="classes and flow" />
+    <MESSAGE value="classi" />
+    <option name="LAST_COMMIT_MESSAGE" value="classi" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -310,6 +328,12 @@
           <url>file://$APPLICATION_CONFIG_DIR$/scratches/scratch_1.js</url>
           <line>46</line>
           <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/class/Exihibition.ts</url>
+          <line>60</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="37" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

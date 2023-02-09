@@ -4,8 +4,8 @@ import {canUserSpend, DAILY_LIMIT, doWeStillHaveTickets, getCurrentStatus} from 
 import path from 'path'
 import Jimp from 'jimp'
 import {mapUsers, getDisplayName} from "../utils/users";
+import {bot} from "../bot";
 
-export const BOT_TOKEN = process.env.BOT_TOKEN || ''
 
 const laureati = [
   'Ripo',
@@ -15,7 +15,6 @@ const laureati = [
   'Ele Buttolo'
 ]
 
-const bot = new Telegraf(BOT_TOKEN)
 
 export default async function handleElemosina(ctx: Context) {
   await ctx.sendChatAction('typing')

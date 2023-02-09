@@ -1,9 +1,9 @@
 import {service} from "./google";
 import {Context, Telegraf} from "telegraf";
+import {bot} from "../bot";
 
 export const BOT_TOKEN = process.env.BOT_TOKEN
 
-const bot = new Telegraf(BOT_TOKEN)
 
 export function getDisplayName(from) {
   const name = from?.first_name && from?.last_name ?

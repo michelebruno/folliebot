@@ -1,5 +1,6 @@
 import {Telegraf} from "telegraf";
 import {VercelRequest, VercelResponse} from '@vercel/node'
+import {bot} from "../src/bot";
 
 export default async (req: VercelRequest, res: VercelResponse) => {
   if (process?.env?.VERCEL_ENV === "production") {
@@ -28,11 +29,31 @@ export default async (req: VercelRequest, res: VercelResponse) => {
 
     const webhookUrl = `${BASE_PATH}/api/telegram-hook?secret_hash=${process.env.SECRET_HASH}`
 
-    const bot = new Telegraf(process.env.BOT_TOKEN)
 
     // Would be nice to somehow do this in a build file or something
     const isSet = await bot.telegram.setWebhook(webhookUrl)
 
+    await bot.telegram.setMyCommands([
+      {description:'Aggiungi una mostra',
+        command:'exhibition'
+      },
+      {
+        description:"Scrocca un caffé alle follie.",
+        command: "scrocca"
+      },
+      {
+        description:"Consiglia un evento, una mostra o un'inspo",
+        command: "consiglia"
+      },
+      {
+        description:"Stato mensile dei caffé.",
+        command: "status"
+      },
+      {
+        description:"Consiglia un evento",
+        command: "event"
+      }
+    ])
     console.log(`Set webhook to ${webhookUrl}: ${isSet}`)
 
     return res.status(200).send('Webhook set to ' + BASE_PATH)

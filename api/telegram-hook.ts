@@ -1,37 +1,50 @@
 import {VercelRequest, VercelResponse} from '@vercel/node'
-import {Telegraf, Context} from 'telegraf'
+import {Telegraf, Markup,} from 'telegraf'
 import handleElemosina, {handleElemosinaCallback} from '../src/handlers/elemosina'
 import {getTickets} from '../src/utils/tickets'
 import {addUser, mapUsers, getDisplayName, broadcast, isAdmin} from "../src/utils/users";
 import {getCurrentStatus} from "../src/utils/limits";
-
-
+import Context from '../src/types/Context'
 // @ts-ignore
 import DynamoDBSession from 'telegraf-session-dynamodb';
 
-import {handleEventSession, handleExihibitionSession} from "../src/utils/channels/events";
+import {handleExihibitionSession} from "../src/utils/channels/events";
 import {hasUserName} from "../src/utils/validators";
+import {bot} from "../src/bot";
+import {Event} from "../src/class/Event";
+import Exihibition from "../src/class/Exihibition";
 
-export const BOT_TOKEN = process.env.BOT_TOKEN
 const SECRET_HASH = process.env.SECRET_HASH
 
 // Note: change to false when running locally
 const BASE_PATH = 'https://folliebot.vercel.app'
-
-const bot = new Telegraf(BOT_TOKEN)
 
 const dynamoDBSession = new DynamoDBSession({
   dynamoDBConfig: {
     params: {
       TableName: process.env.AWS_DYNAMODB_TABLE_SESSIONS
     },
-    region: process.env.AWS_DYNAMODB_REGION || 'eu-south-1'
+    region: process.env.AWS_DYNAMODB_REGION || 'eu-south-1',
+  },
+  getSessionKey(ctx: Context) {
+    if (!ctx.from || !ctx.chat) {
+      return
+    }
+    return `${process.env.VERCEL_ENV}:${ctx.from.id}:${ctx.chat.id}`
   }
 })
 
 
 bot.use(dynamoDBSession.middleware())
 
+bot.start(async (ctx: Context) => {
+
+  const {update: {message: {from, chat}}} = ctx
+
+  await addUser(from, chat);
+
+  await ctx.reply('Ciao, benvenuto!')
+})
 
 export async function handleTestCommand(ctx: Context) {
   const COMMAND = '/test'
@@ -52,27 +65,10 @@ export async function handleTestCommand(ctx: Context) {
   }
 }
 
-bot.command('event', async (ctx: Context) => {
-  if (await hasUserName(ctx)) {
-
-    ctx.session.sharing_to = 'events';
-
-    await ctx.reply("Mandami un link che descriva l'evento")
-  }
-})
-
-
-
-bot.command('exhibition', async (ctx: Context) => {
-  if (await hasUserName(ctx)) {
-
-    ctx.session.sharing_to = 'exhibition';
-
-    await ctx.reply("Mandami un link che descriva la mostra")
-  }
-})
 
 bot.command('broadcast', async (ctx: Context) => {
+  ctx?.session = null
+
   if (await hasUserName(ctx) && isAdmin(ctx)) {
 
     ctx.session.sharing_to = 'broadcast';
@@ -81,18 +77,7 @@ bot.command('broadcast', async (ctx: Context) => {
   }
 })
 
-bot.command('test', async (ctx) => {
-  await handleTestCommand(ctx)
-})
-
-bot.start(async (ctx: Context) => {
-
-  const {update: {message: {from, chat}}} = ctx
-
-  await addUser(from, chat);
-
-  await ctx.reply('Ciao, benvenuto!')
-})
+bot.command('test', handleTestCommand)
 
 bot.command('elemosina', handleElemosina)
 bot.command('scrocca', handleElemosina)
@@ -113,6 +98,62 @@ bot.command('cancel', async (ctx: Context) => {
   await ctx.reply("Ho annnulato la tua richiesta.")
 })
 
+bot.command('consiglia', async (ctx: Context) => {
+
+  await ctx.sendChatAction('typing');
+
+  ctx.session = null;
+
+  if (await hasUserName(ctx)) {
+
+    ctx.session.user = ctx.from;
+
+    await ctx.reply("Cosa vuoi consigliare?",
+
+      Markup.inlineKeyboard([
+        [
+          Markup.button.callback("Evento", "consiglia/evento"),
+          Markup.button.callback("Mostra", "consiglia/mostra"),
+        ],
+        [
+          Markup.button.callback("Sito", "consiglia/sito"),
+        ],
+      ])
+    )
+  }
+})
+
+bot.action('consiglia/evento', async (ctx: Context) => {
+  await ctx.editMessageReplyMarkup({
+    reply_markup: {remove_keyboard: true},
+  });
+
+
+  ctx.session.sharing_to = "events";
+
+  await ctx.reply("Stai consigliando un *evento* su @eventiBVS", {parse_mode: "MarkdownV2"});
+
+  await (new Event(ctx.session, ctx)).ask('url', ctx)
+
+
+})
+bot.action('consiglia/mostra', async (ctx: Context) => {
+  await ctx.editMessageReplyMarkup({
+    reply_markup: {remove_keyboard: true},
+  });
+
+
+  ctx.session.sharing_to = 'exhibitions';
+
+  await ctx.reply("Stai consigliando una *mostra* su @eventiBVS", {parse_mode: "MarkdownV2"});
+
+  await (new Exihibition(ctx.session, ctx)).ask('url', ctx)
+
+
+})
+
+bot.action('consiglia/saltaDescrizione', async (ctx: Context) => {
+});
 
 bot.command('status', async (ctx: Context) => {
 
@@ -126,22 +167,18 @@ bot.command('status', async (ctx: Context) => {
 
 })
 
-bot.command('id', async (ctx: Context) => {
-  const {message} = ctx
-  await ctx.reply(`Ciao, il tuo id è ${message?.from?.id}. Ti chiami ${message?.from?.first_name} ${message?.from?.last_name}, @${message?.from?.username}.`, {
-    reply_to_message_id: message?.message_id
-  })
-  await ctx.reply(JSON.stringify(message), {
-    reply_to_message_id: message?.message_id
-  })
-})
-
 
 bot.on('message', async (ctx: Context) => {
   if (ctx.session.sharing_to === 'events') {
-    return await handleEventSession(ctx);
-  } else if (ctx.session.sharing_to === 'exhibition') {
-    return await handleExihibitionSession(ctx);
+
+    const event = new Event(ctx.session, ctx)
+    return await event.handleSession();
+
+  } else if (ctx.session.sharing_to === 'exhibitions') {
+
+    const exhibition = new Exihibition(ctx.session, ctx)
+    return await exhibition.handleSession();
+
   } else if (ctx.session.sharing_to === 'broadcast' && isAdmin(ctx)) {
     await mapUsers(async u => {
       await bot.telegram.sendMessage(u.chatId, ctx?.message?.text, {
@@ -171,16 +208,11 @@ bot.on('callback_query', async (ctx: Context) => {
   } catch (e: any) {
     console.error(e.toString())
     if (e.toString() === '400: Bad Request: message to delete not found') return;
-    await ctx.reply("C'è stato un errore. Riprova")
+    // await ctx.reply("C'è stato un errore. Riprova")
     await bot.telegram.sendMessage(850859747, "⚠️ C'è stato un errore con " + getDisplayName(from))
     await bot.telegram.sendMessage(850859747, e.toString())
-    await bot.telegram.sendMessage(850859747, "Context:\n" + JSON.stringify(ctx))
   }
 })
-
-// bot.on("message", async (ctx) => {
-//     await handleOnMessage(ctx)
-// })
 
 export default async (req: VercelRequest, res: VercelResponse) => {
   try {
@@ -189,11 +221,8 @@ export default async (req: VercelRequest, res: VercelResponse) => {
 
     if (query.setWebhook === 'true') {
       const webhookUrl = `${BASE_PATH}/api/telegram-hook?secret_hash=${encodeURI(SECRET_HASH)}`
-
       // Would be nice to somehow do this in a build file or something
       const isSet = await bot.telegram.setWebhook(webhookUrl)
-
-      console.log(`Set webhook to ${webhookUrl}: ${isSet}`)
     }
 
     if (query.secret_hash == SECRET_HASH) {

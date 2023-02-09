@@ -4,7 +4,7 @@ import moment from "moment";
 export function validateAndTransformUrl(url: string | null) {
   if (!url) return false;
 
-  let regex = /^(http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*(:[0-9]{1,5})?(\/.*)?$/;
+  let regex = /^(http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
   if (!regex.test(url)) {
     return false;
   }
@@ -17,19 +17,31 @@ export function validateAndTransformUrl(url: string | null) {
   return url;
 }
 
-export function validateAndTransformTime(timeString: string) {
-  const time = moment(timeString, [
+export function validateAndTransformTime(timeString: string, startDate: number = 0) {
+  let time = moment(timeString, [
     "HH:mm",
     "HHmm",
     "H:mm",
     "Hmm",
   ]);
 
-  return time.isValid() ? time.format("HH:mm") : false;
+  if (time.isValid() && startDate) {
+    const date = moment(startDate);
+    date.set({
+      hour: time.get('hour'),
+      minute: time.get('minute'),
+      second: time.get('second')
+    });
+
+    time = date
+  }
+
+  return time.isValid() ? time.valueOf() : false;
 }
 
 export function validateAndTransformDate(dateString: string) {
 
+  moment.locale('it')
   const date = moment(dateString, [
     "DD-MM-YYYY",
     "DD/MM/YYYY",
@@ -43,9 +55,13 @@ export function validateAndTransformDate(dateString: string) {
     "MM/DD/YY",
     "YY-MM-DD",
     "YY/MM/DD",
+    "DD MMM YYYY",
+    "DD MMMM YYYY",
+    "DD MMM YYYY HH:mm",
+    "DD MMMM YYYY HH:mm",
   ]);
 
-  return date.isValid() ? date.format("DD/MM/YYYY") : false;
+  return date.isValid() ? date.valueOf() : false;
 }
 
 export async function hasUserName(ctx: Context) {
