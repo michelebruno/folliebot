@@ -1,18 +1,16 @@
 // Create a service client module using ES6 syntax.
-import {DynamoDBDocumentClient} from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 // Create the DynamoDB service client module using ES6 syntax.
-import {DynamoDBClient} from "@aws-sdk/client-dynamodb";
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 // Create an Amazon DynamoDB service client object.
-
 
 export const ddbClient = new DynamoDBClient({
   region: process.env.AWS_DYNAMODB_REGION || 'eu-south-1',
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-  }
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
 });
-
 
 const marshallOptions = {
   // Whether to automatically convert empty strings, blobs, and sets to `null`.
@@ -34,4 +32,4 @@ const ddbDocClient = DynamoDBDocumentClient.from(ddbClient, {
   unmarshallOptions,
 });
 
-export {ddbDocClient};
+export { ddbDocClient };

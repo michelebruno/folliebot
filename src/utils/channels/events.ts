@@ -77,13 +77,13 @@ export async function handleExihibitionSession(ctx: Context) {
   const {message} = ctx;
 
 
-  if (!session.url) {
+  if (!session.link) {
     try {
-      const url = new URL(validateAndTransformUrl(message?.text));
+      const link = new URL(validateAndTransformUrl(message?.text));
 
-      session.url = url.toString()
+      session.link = link.toString()
 
-      console.log("URL valido", session.url)
+      console.log("link valido", session.link)
       await ctx.reply("Quando inizia?");
 
 
