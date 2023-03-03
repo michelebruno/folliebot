@@ -14,6 +14,7 @@ function sleep(ms) {
 }
 
 type status = {
+  always: number,
   month: number,
   week: number,
   day: number
@@ -37,6 +38,7 @@ export async function getCurrentStatus(utente: null | object = null): Promise<st
     month: 0,
     week: 0,
     day: 0,
+    always: myTickets.length + 35 + 1,
   };
 
   status.day = myTickets.filter((t) => today.isBefore(Number(t[3]))).length;
@@ -54,11 +56,13 @@ export async function canUserSpend(ctx: Context, utente: any) {
     await ctx.reply('Non fare il pezzente, ne hai già scroccato uno oggi!');
 
     return false;
-  } if (status.week >= WEEKLY_USER_LIMIT) {
+  }
+  if (status.week >= WEEKLY_USER_LIMIT) {
     await ctx.reply(`Ne hai già scroccati ${WEEKLY_USER_LIMIT} questa settimana!`);
 
     return false;
-  } if (status.month >= MONTHLY_USER_LIMIT) {
+  }
+  if (status.month >= MONTHLY_USER_LIMIT) {
     await ctx.reply('Non fare il pezzente, ne hai già scroccati troppi questo mese!');
 
     return false;
@@ -71,6 +75,12 @@ export async function doWeStillHaveTickets(ctx: Context) {
   // if (ctx?.from?.id === 850859747) return true
   const status = await getCurrentStatus();
 
+  if (status.always >= 315) {
+    await ctx.reply('Sono finiti i caffé sospesi :(');
+    await ctx.sendChatAction('typing');
+    return false;
+  }
+
   if (status.day >= DAILY_LIMIT) {
     // if (ctx?.from?.id === 850859747) return true
 
@@ -80,10 +90,14 @@ export async function doWeStillHaveTickets(ctx: Context) {
 
     await ctx.reply('Che clima...');
     return false;
-  } if (status.week >= WEEKLY_LIMIT) {
+  }
+
+  if (status.week >= WEEKLY_LIMIT) {
     await ctx.reply('Mi spiace, sono finiti i sospesi di questa settimana!');
     return false;
-  } if (status.month >= MONTHLY_LIMIT) {
+  }
+
+  if (status.month >= MONTHLY_LIMIT) {
     await ctx.reply('Mi spiace, sono finiti i sospesi di questo mese!');
     return false;
   }
