@@ -1,6 +1,7 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import { Markup } from 'telegraf';
 import DynamoDBSession from 'telegraf-session-dynamodb';
+import moment from 'moment';
 import handleElemosina, { handleElemosinaCallback } from '../src/handlers/elemosina';
 import { getTickets } from '../src/utils/tickets';
 import {
@@ -45,7 +46,7 @@ bot.start(async (ctx: Context) => {
   await ctx.reply('Ciao, benvenuto!');
 });
 
-bot.command('eventi', async (ctx:Context) => {
+bot.command('eventi', async (ctx: Context) => {
   await ctx.reply('ciao');
   const events = await Event.getAll();
 
@@ -151,7 +152,54 @@ bot.action('consiglia/mostra', async (ctx: Context) => {
   await (new Exihibition(ctx.session, ctx)).ask('link', ctx);
 });
 
-bot.action('consiglia/saltaDescrizione', async (ctx: Context) => {
+bot.command('aule', async (ctx: Context) => {
+  await ctx.sendChatAction('typing');
+
+  const today = moment();
+
+  const url = `https://www7.ceda.polimi.it/spazi/spazi/controller/OccupazioniGiornoEsatto.do?csic=MIB02&categoria=tutte&tipologia=tutte&giorno_day=${today.date()}&giorno_month=${today.month() + 1}&giorno_year=${today.year()}&jaf_giorno_date_format=dd%2FMM%2Fyyyy&evn_visualizza=`;
+
+  await ctx.replyWithHTML('Situa aule di oggi', Markup.inlineKeyboard([
+    [Markup.button.url('🏢🏢🏢️', url)],
+  ]));
+});
+
+bot.command('angelus', async (ctx: Context) => {
+  await ctx.sendChatAction('typing');
+
+  await ctx.sendMessage('L’angelo del Signore portò l’annuncio a Maria\n'
+    + '*E la Vergine concepì per opera dello Spirito Santo* \n'
+    + '\n'
+    + 'Ecco la serva del Signore\n'
+    + '*Mi accada secondo la tua parola* \n'
+    + '\n'
+    + 'E il Verbo si è fatto carne\n'
+    + '*E abita in mezzo a noi* \n'
+    + '\n'
+    + '_Ave Maria…_\n'
+    + '\n'
+    + 'Prega per noi, santa Madre di Dio\n'
+    + '*Perché diventiamo degni delle promesse di Cristo*\n'
+    + '\n'
+    + 'Preghiamo\n'
+    + 'Infondi, Signore, la tua grazia nei nostri cuori, affinché noi, che abbiamo conosciuto per l’annuncio dell’angelo l’Incarnazione del Figlio tuo Gesù Cristo, attraverso la sua Passione e Morte siamo condotti alla gloria della sua Risurrezione\n'
+    + 'Per Cristo nostro Signore\n'
+    + '*Amen* \n'
+    + '\n'
+    + 'Gloria…\n', { parse_mode: 'MarkdownV2' });
+});
+
+bot.command('memorare', async (ctx: Context) => {
+  await ctx.sendChatAction('typing');
+
+  await ctx.reply('Memoráre, o piíssima Virgo María, non esse audìtum a sǽculo, quémquam ad tua curréntem præsìdia, tua implorántem auxìlia, tua peténtem suffrágia, esse derelíctum.\n'
+    + 'Ego tali animátus confidéntia, ad te, Virgo Vìrginum, Màter, curro, ad te vénio, còram te gémens peccàtor assisto.\nNoli, Màter Verbi, verba mea despícere; sed áudi propìtia et exáudi.');
+});
+
+bot.command('grandmaison', async (ctx: Context) => {
+  await ctx.sendChatAction('typing');
+
+  await ctx.reply('Santa Maria, Madre di Dio,\nconservami un cuore di fanciullo,\npuro e limpido come acqua di sorgente.\nOttienimi un cuore semplice,\nche non assapori la tristezza;\nun cuore grande nel donarsi\ne tenero nella compassione;\nun cuore fedele e generoso\nche non dimentichi nessun beneficio\ne non serbi rancore per il male.\nForma in me un cuore dolce e umile,\nun cuore grande ed indomabile\nche nessuna ingratitudine possa chiudere\ne nessuna indifferenza possa stancare;\nun cuore tormentato dalla gloria di Gesù Cristo,\nferito dal Suo amore con una piaga\nche non rimargini se non in Cielo. Amen.');
 });
 
 bot.command('status', async (ctx: Context) => {
@@ -168,15 +216,22 @@ bot.on('message', async (ctx: Context) => {
   if (ctx.session.sharing_to === 'events') {
     const event = new Event(ctx.session, ctx);
     return event.handleSession();
-  } if (ctx.session.sharing_to === 'exhibitions') {
+  }
+  if (ctx.session.sharing_to === 'exhibitions') {
     const exhibition = new Exihibition(ctx.session, ctx);
     return await exhibition.handleSession();
-  } if (ctx.session.sharing_to === 'broadcast' && isAdmin(ctx)) {
+  }
+  if (ctx.session.sharing_to === 'broadcast' && isAdmin(ctx)) {
     await mapUsers(async (u) => {
-      await bot.telegram.sendMessage(u.chatId, ctx?.message?.text, {
-        entities: ctx?.message?.entities,
-        // parse_mode: 'Markdown'  // use the same parse_mode that you used in the original message
-      });
+      try {
+        await bot.telegram.sendMessage(u.chatId, ctx?.message?.text, {
+          entities: ctx?.message?.entities,
+          // parse_mode: 'Markdown'
+          // use the same parse_mode that you used in the original message
+        });
+      } catch (e) {
+        await bot.telegram.sendMessage(850859747, `Errore nel broadcast verso l'utente ${getDisplayName(u)} con ID: ${u.chatId}`);
+      }
     });
   }
 });
@@ -188,7 +243,8 @@ bot.on('callback_query', async (ctx: Context) => {
   try {
     if (callback_query?.data === 'elemosina_sure') {
       return await handleElemosinaCallback(ctx);
-    } if (callback_query?.data === 'elemosina_delete') {
+    }
+    if (callback_query?.data === 'elemosina_delete') {
       await ctx.telegram.deleteMessage(message.chat.id, message.message_id);
 
       await ctx.reply('Grande, conservalo per un caffé giudizio!');
