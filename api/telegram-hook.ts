@@ -81,6 +81,7 @@ bot.command('broadcast', async (ctx: Context) => {
     ctx.session.sharing_to = 'broadcast';
 
     await ctx.reply('Manda il messaggio da inoltrare a tutti.');
+    ctx?.session = null;
   }
 });
 

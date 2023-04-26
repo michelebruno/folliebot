@@ -38,7 +38,7 @@ export async function getCurrentStatus(utente: null | object = null): Promise<st
     month: 0,
     week: 0,
     day: 0,
-    always: myTickets.length + 35 + 1,
+    always: myTickets.length + (utente ? 0 : (35 + 1)),
   };
 
   status.day = myTickets.filter((t) => today.isBefore(Number(t[3]))).length;
@@ -75,7 +75,7 @@ export async function doWeStillHaveTickets(ctx: Context) {
   // if (ctx?.from?.id === 850859747) return true
   const status = await getCurrentStatus();
 
-  if (status.always >= 315) {
+  if (status.always >= (315 + 17)) {
     await ctx.reply('Sono finiti i caffé sospesi :(');
     await ctx.sendChatAction('typing');
     return false;

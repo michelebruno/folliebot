@@ -23,26 +23,6 @@ export function isAdmin(from: object | string | number) {
   return [850859747, 'michelebruno'].includes(id);
 }
 
-export async function addUser(from, chat) {
-  const users = await getUsers();
-
-  if (users.findIndex((u) => u.userId == from?.id) !== -1) return true;
-
-  const values = [
-    [chat?.id, from?.id, from?.username, from?.last_name, from?.first_name],
-  ];
-
-  await service.spreadsheets.values.append({
-    resource: { values },
-    valueInputOption: 'USER_ENTERED',
-    spreadsheetId: process.env.SPREADSHEET_ID,
-    range: 'users!A2:H',
-    // valueInputOption,
-  });
-
-  await getUsers(true);
-}
-
 let _users = [];
 
 export async function getUsers(force = false) {
@@ -65,6 +45,26 @@ export async function getUsers(force = false) {
   return _users;
 }
 
+export async function addUser(from, chat) {
+  const users = await getUsers();
+
+  if (users.findIndex((u) => u.userId == from?.id) !== -1) return true;
+
+  const values = [
+    [chat?.id, from?.id, from?.username, from?.last_name, from?.first_name],
+  ];
+
+  await service.spreadsheets.values.append({
+    resource: { values },
+    valueInputOption: 'USER_ENTERED',
+    spreadsheetId: process.env.SPREADSHEET_ID,
+    range: 'users!A2:H',
+    // valueInputOption,
+  });
+
+  await getUsers(true);
+}
+
 export async function getUser(id: number) {
 
 }
@@ -82,7 +82,11 @@ export async function broadcast(fn: Function | string) {
     const message = typeof fn === 'function' ? await fn(u) : fn;
 
     if (message) {
-      await bot.telegram.sendMessage(u.chatId, message);
+      try {
+        await bot.telegram.sendMessage(u.chatId, message);
+      } catch (e) {
+        await bot.telegram.sendMessage(850859747, `Errore nel broadcast verso l'utente ${getDisplayName(u)} con ID: ${u.chatId}`);
+      }
     }
   });
 }
